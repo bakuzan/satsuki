@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import _pieceService from '../../actions/piece-service';
+import _movementService from '../../actions/movement-service';
 import './chess.css';
 
 class Chess extends Component {

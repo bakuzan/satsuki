@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import App from './views/app/app';
+import Chess from './components/chess/chess';
 import About from './views/about/about';
 import PageNotFound from './views/page-not-found/page-not-found';
 import { paths } from './constants/paths';
