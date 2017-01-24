@@ -11,7 +11,7 @@ class Header extends Component {
     return (
       <div className="satsuki-header center-contents">
         <Link className="ripple" id="satsuki-svg" to={paths.base}>
-          <satsukiSvg />
+          <SatsukiSvg />
         </Link>
         <h1>SATSUKI</h1>
         <div id="navigation-links">

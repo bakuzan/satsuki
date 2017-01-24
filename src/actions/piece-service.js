@@ -1,3 +1,5 @@
+import React from 'react';
+import Piece from '../components/piece/piece';
 import _movementService from './movement-service';
 
 class PieceService {

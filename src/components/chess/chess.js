@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Board from '../board/board';
 import _pieceService from '../../actions/piece-service';
 import _movementService from '../../actions/movement-service';
 import './chess.css';

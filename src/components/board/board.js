@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Sqaure from '../square/square';
+import Square from '../square/square';
 import Scales from '../scales/scales';
 import './board.css';
 

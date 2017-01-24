@@ -4,19 +4,21 @@
 $darken-amount: 5%;
 
 /* Colours*/
-$juri-purple: #5f3e85;
-$juri-pink: #e627a8;
-$juri-black: #2c1d1a;
+$satsuki-blue: #0117ff;
+$satsuki-white: #fefefe;
+$junketsu-eye-red: #CA273C;
+$satsuki-hair-black: #1A1323;
+
 $white: #fff;
 $black: #000;
 
 /*
  * USAGES
  */
-$primary-background: $juri-purple;
-$primary-colour: $juri-purple;
-$primary-colour-contrast: $white;
+$primary-background: $satsuki-blue;
+$primary-colour: $satsuki-blue;
+$primary-colour-contrast: $satsuki-white;
 
-$secondary-background: $juri-pink;
-$secondary-colour: $juri-pink;
-$secondary-colour-contrast: $black;
+$secondary-background: $junketsu-eye-red;
+$secondary-colour: $junketsu-eye-red;
+$secondary-colour-contrast: $satsuki-hair-black;

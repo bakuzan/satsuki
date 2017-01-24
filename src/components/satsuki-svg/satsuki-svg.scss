@@ -7,7 +7,7 @@ svg.satsuki-svg {
   width: 50px;
   height: 50px;
   background-color: $primary-background;
-  padding: 8px;
+  padding: 4px;
   border-radius: 20%;
   box-sizing: border-box;
   &:not(:hover) {
@@ -39,7 +39,7 @@ svg.satsuki-svg {
 }
 
 #word {
-  font-size: 40px;
+  font-size: 22px;
   transition: all 1s ease-in-out;
   opacity: 0;
 }

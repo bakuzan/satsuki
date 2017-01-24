@@ -4,7 +4,7 @@ import './satsuki-svg.css';
 class SatsukiSvg extends Component {
   render() {
     return (
-      <svg className="juri-svg" viewBox="-20 -60 80 80" preserveAspectRatio="xMaxYMax meet" xmlns="http://www.w3.org/2000/svg">
+      <svg className="satsuki-svg" viewBox="-20 -60 80 80" preserveAspectRatio="xMaxYMax meet" xmlns="http://www.w3.org/2000/svg">
         <text className="letter hideshow" x="-3" y="-0">
           S
         </text>
