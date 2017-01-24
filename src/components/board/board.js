@@ -9,7 +9,7 @@ class Board extends Component {
       item.selected = (
         selected && selected.rank === item.rank && selected.file === item.file
       );
-      return (<Square {...item} handleSelectPiece={this.props.handleSelectPiece} />);
+      return (<Square key={item.id} {...item} handleSelectPiece={this.props.handleSelectPiece} />);
     });
   }
   render() {
