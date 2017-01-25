@@ -1,19 +1,6 @@
 class HelperService {
-  hasCorrectBoardOrientation({ ranks, isWhiteTurn }) {
-    if (isWhiteTurn && ranks[0] === 8) return true;
-    if (!isWhiteTurn && ranks[0] === 1) return true;
-    return false;
-  }
   reverseArray(array) {
     return array.slice().reverse();
-  }
-  reverseBoard(oldHistory) {
-    const history = oldHistory.slice();
-    const current = history[history.length - 1];   
-    current.squares = this.reverseArray(current.squares);
-    current.files = this.reverseArray(current.files);
-    current.ranks = this.reverseArray(current.ranks);
-    return history;
   }
   isBetween(num1, num2, middleNumber) {
     if (num1 < middleNumber && middleNumber < num2) return true;
