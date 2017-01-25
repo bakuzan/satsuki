@@ -1,17 +1,23 @@
 import _helperService from './helper-service';
 
 class MovementService {
+  calculatePossibleAttacks(squares) {
+    console.log('possible attacks: ', this);
+    return _checkService.discoverSquaresUnderThreat(this, squares);
+  }
   hasFreePath(from, to, match, squares, files) {
-    const hasDiagonalMovement = !(match.files && match.ranks);
+    const hasDiagonalMovement = !(match.files || match.ranks);
     for(let i = 0, length = squares.length; i < length; i++) {
       const square = squares[i];
       if (square.contains === null) continue;
-
+      if (_helperService.isFromSquare(from, square)) continue;
+      
       if (hasDiagonalMovement) {
-        console.log('diagonal: ', from, to);
+        const fileIndex = files.findIndex(x => x === square.file);
+        if (_helperService.isOnDiagonal(fileIndex, from, to, square)) return false;
       } else if (match.files && square.file === to.file) {
-        if (_helperService.isBetween(from.rank, to.rank, square.rank)) return false;
-      } else {
+        if (_helperService.isBetween(from.rank, to.rank, square.rank)) return false; 
+      } else {    
         const fileIndex = files.findIndex(x => x === square.file);
         if (match.ranks && square.rank === to.rank) {
           if (_helperService.isBetween(from.fileIndex, to.fileIndex, fileIndex)) return false;
@@ -21,28 +27,32 @@ class MovementService {
     return true;
   }
   canMove({ name, colour }, from, to, files, squares) {
-    const match = {
-      files: from.file === to.file,
-      ranks: from.rank === to.rank
+    const match = { 
+      files: from.file === to.file, 
+      ranks: from.rank === to.rank 
     };
     from.fileIndex = files.findIndex(x => x === from.file);
     to.fileIndex = files.findIndex(x => x === to.file);
     const fileDiff = Math.abs(to.fileIndex - from.fileIndex);
     const rankDiff = Math.abs(to.rank - from.rank);
-
+    
     switch (name) {
       case 'pawn':
         if (!match.files) return false;
-        if (colour === 'white' && from.rank === 2 && [3,4].indexOf(to.rank) !== -1) return true;
-        if (colour === 'black' && from.rank === 7 && [6,5].indexOf(to.rank) !== -1) return true;
-        if (rankDiff === 1) return true;
+        if (colour === 'white') {
+          if (from.rank === 2 && [3,4].indexOf(to.rank) !== -1) return true;
+          if (rankDiff === 1 && from.rank < to.rank) return true;
+        } else if (colour === 'black') {
+          if(from.rank === 7 && [6,5].indexOf(to.rank) !== -1) return true;
+          if (rankDiff === 1 && from.rank > to.rank) return true;
+        }
         return false;
       case 'rook':
         if (match.files || match.ranks) return this.hasFreePath(from, to, match, squares, files);
         return false;
       case 'knight':
         if (match.files || match.ranks) return false;
-        if (rankDiff === 1 && fileDiff === 2) return true;
+        if (rankDiff === 1 && fileDiff === 2) return true; 
         if (rankDiff === 2 && fileDiff === 1) return true;
         return false;
       case 'bishop':
@@ -53,8 +63,8 @@ class MovementService {
         if (fileDiff === rankDiff) return this.hasFreePath(from, to, match, squares, files);
         return false;
       case 'king':
-        if (match.files && rankDiff === 1) return true;
         if (match.ranks && fileDiff === 1) return true;
+        if (match.files && rankDiff === 1) return true;
         if (rankDiff === 1 && fileDiff === 1) return true;
         return false;
       default:
