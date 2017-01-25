@@ -26,6 +26,26 @@ class PieceService {
   canTakePiece({ squares, files, selected: { file, rank, contains: { props } } }, newSquare) {
     return _movementService.canTake(props, { file, rank }, { file: newSquare.file, rank: newSquare.rank }, files, squares);
   }
+  getPieceAttackPattern(piece) {
+    const rook = [[0, 1], [0, -1], [1, 0], [-1, 0]];
+    const bishop = [[1, 1], [1, -1], [-1, 1], [-1, -1]];
+    switch(piece) {
+      case 'pawn':
+        return [[1,-1],[1,1],[-1,-1],[-1,1]];
+      case 'rook':
+        return rook
+      case 'knight':
+        return [[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[-1,2],[1,-2],[-1,-2]];
+      case 'bishop':
+        return bishop;
+      case 'queen':
+        return [...bishop, ...rook];
+      case 'king':
+        return [[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,-1],[-1,1]];
+      default:
+        return null;
+    }
+  }
 }
 
 export default new PieceService();

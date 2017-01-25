@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Board from '../board/board';
+import ToggleBox from '../toggle-box/toggle-box';
 import _pieceService from '../../actions/piece-service';
 import _movementService from '../../actions/movement-service';
 import _helperService from '../../actions/helper-service';
 import _boardService from '../../actions/board-service';
+import * as Values from '../../constants/values';
 import './chess.css';
 
 class Chess extends Component {
@@ -11,9 +13,10 @@ class Chess extends Component {
     super();
     this.state = {
       history: [{
-        files: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
-        ranks: [8, 7, 6, 5, 4, 3, 2, 1],
-        squares: this.buildStartingBoard(Array(64).fill(null)),
+        attacks: [],
+        files: Values.files,
+        ranks: Values.ranks,
+        squares: _boardService.buildStartingBoard(Array(64).fill(null)),
         selected: null,
         isWhiteTurn: true,
       }],
@@ -21,39 +24,17 @@ class Chess extends Component {
     };
 
     this.handlePieceMovement = this.handlePieceMovement.bind(this);
+    this.handleAutoReverseBoard = this.handleAutoReverseBoard.bind(this);
   }
-  buildStartingBoard(array) {
-    let letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-    let lastIndex = -1;
-    return array.map((item, index) => {
-      const number = 8 - Math.floor(index / 8);
-      const letterIndex = (index + number) % 8;
-      if (letterIndex === lastIndex) {
-        letters.push(letters.shift());
-        lastIndex = -1;
-      }
-
-      const letter = letters[letterIndex];
-      lastIndex = letterIndex;
-      return {
-        id: index,
-        rank: number,
-        file: letter,
-        contains: _pieceService.getStartingPiece(number, letter)
-      };
-    });
-  }
-  handleAutoReverseBoard(event) {
-    const value = event.target.checked;
-    console.log(value);
-    this.setState({ autoReverseBoard: value });
+  handleAutoReverseBoard(name, value) {
+    this.setState({ [name]: value });
   }
   handleReverseBoard() {
     this.setState({ history: _boardService.reverseBoard(this.state.history) });
   }
   handlePieceMovement({ rank, file, contains }) {
     console.log('handle piece movement: ', rank, file, contains);
-    const history = this.state.history.slice();
+    let history = this.state.history.slice();
     const current = history[history.length - 1];
 
     if (current.selected === null && !contains) return;
@@ -82,7 +63,7 @@ class Chess extends Component {
           isWhiteTurn: !current.isWhiteTurn,
         }]);
         if (this.state.autoReverseBoard && _boardService.hasCorrectBoardOrientation(current)) {
-          history = _helperService.reverseBoard(history);
+          history = _boardService.reverseBoard(history);
         }
         console.log('%c NEW HISTORY: ', 'color: red;', history);
       }
@@ -93,6 +74,7 @@ class Chess extends Component {
   render() {
     const currentBoard = this.state.history[this.state.history.length - 1];
     const currentPlayer = `Current turn: ${currentBoard.isWhiteTurn ? 'white' : 'black'}`;
+    const currentAutoReverse = `Auto reverse: ${this.state.autoReverseBoard ? 'ON' : 'OFF' }`;
     return (
       <div id="chess-game" className="row">
         <Board currentBoard={currentBoard}
@@ -102,10 +84,10 @@ class Chess extends Component {
           <button onClick={() => this.handleReverseBoard()}>
             reverse board
           </button>
-          <label>
-            <input type="checkbox" onChange={(e) => this.handleAutoReverseBoard(e)} />
-            auto reverse board
-          </label>
+          <ToggleBox name="autoReverseBoard"
+                     text={currentAutoReverse}
+                     isChecked={this.state.autoReverseBoard}
+                     handleChange={this.handleAutoReverseBoard} />
         </div>
       </div>
     );

@@ -11,13 +11,13 @@ class MovementService {
       const square = squares[i];
       if (square.contains === null) continue;
       if (_helperService.isFromSquare(from, square)) continue;
-      
+
       if (hasDiagonalMovement) {
         const fileIndex = files.findIndex(x => x === square.file);
         if (_helperService.isOnDiagonal(fileIndex, from, to, square)) return false;
       } else if (match.files && square.file === to.file) {
-        if (_helperService.isBetween(from.rank, to.rank, square.rank)) return false; 
-      } else {    
+        if (_helperService.isBetween(from.rank, to.rank, square.rank)) return false;
+      } else {
         const fileIndex = files.findIndex(x => x === square.file);
         if (match.ranks && square.rank === to.rank) {
           if (_helperService.isBetween(from.fileIndex, to.fileIndex, fileIndex)) return false;
@@ -27,15 +27,15 @@ class MovementService {
     return true;
   }
   canMove({ name, colour }, from, to, files, squares) {
-    const match = { 
-      files: from.file === to.file, 
-      ranks: from.rank === to.rank 
+    const match = {
+      files: from.file === to.file,
+      ranks: from.rank === to.rank
     };
     from.fileIndex = files.findIndex(x => x === from.file);
     to.fileIndex = files.findIndex(x => x === to.file);
     const fileDiff = Math.abs(to.fileIndex - from.fileIndex);
     const rankDiff = Math.abs(to.rank - from.rank);
-    
+
     switch (name) {
       case 'pawn':
         if (!match.files) return false;
@@ -52,7 +52,7 @@ class MovementService {
         return false;
       case 'knight':
         if (match.files || match.ranks) return false;
-        if (rankDiff === 1 && fileDiff === 2) return true; 
+        if (rankDiff === 1 && fileDiff === 2) return true;
         if (rankDiff === 2 && fileDiff === 1) return true;
         return false;
       case 'bishop':
@@ -72,6 +72,10 @@ class MovementService {
     }
   }
   canTake({ name, colour }, from, to, files, squares) {
+    const toSquare = squares.find(x => x.file === to.file && x.rank === to.rank);
+    if (!toSquare) return false;
+    if (toSquare.contains && toSquare.contains.props.colour === colour) return false;
+    
     switch(name) {
       case 'pawn':
         const fromIndex = files.findIndex(x => x === from.file);

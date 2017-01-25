@@ -12,6 +12,21 @@ class About extends Component {
           <p className="subtitle">Satsuki is a chess application.</p>
         </header>
         <div className="content">
+          <p>
+            Chess. No AI. Reversable view of the table.
+            Optional move suggestion mode, turn timer and anything else that enters my head to be developed.
+          </p>
+          <p>
+            Currently unsupported features:
+            <ul>
+              <li>check</li>
+              <li>check-mate</li>
+              <li>castling</li>
+              <li>en passant</li>
+              <li>promotion</li>
+              <li>stalemate checking</li>
+            </ul>
+          </p>
           <div id="about-links">
             <h4>Pages to visit:</h4>
             <ul>
