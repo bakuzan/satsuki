@@ -72,7 +72,7 @@ class Chess extends Component {
       const canMove = !square.contains && _pieceService.canMovePiece(current, square);
       if (canTake || canMove) {
         const squares = _movementService.moveToNewPosition(current, { rank, file });
-        const attacks = _movementService.calculatePossibleAttacks(squares);
+        const attacks = _movementService.calculatePossibleAttacks(current.files, squares);
         history.push(...[{
           files: current.files,
           ranks: current.ranks,
