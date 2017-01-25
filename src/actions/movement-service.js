@@ -2,9 +2,8 @@ import _helperService from './helper-service';
 import _checkService from './check-service';
 
 class MovementService {
-  calculatePossibleAttacks(squares) {
-    console.log('possible attacks: ', this);
-    return _checkService.discoverSquaresUnderThreat(this, squares);
+  calculatePossibleAttacks(files, squares) {
+    return _checkService.discoverSquaresUnderThreat(this, files, squares);
   }
   hasFreePath(from, to, match, squares, files) {
     const hasDiagonalMovement = !(match.files || match.ranks);
