@@ -1,7 +1,8 @@
 import _helperService from './helper-service';
+import _movementService from './movement-service';
 
 class CheckService {
-  discoverSquaresUnderThreat(movementService, files, squares) {
+  discoverSquaresUnderThreat(files, squares) {
     const attacks = [];
     for(let i = 0, length = squares.length; i < length; i++) {
       const square = squares[i];
@@ -13,7 +14,7 @@ class CheckService {
       for(let j = 0, count = attackPattern.length; j < count; j++) {
         const move = attackPattern[j];
         const toSquare = { rank: square.rank + move[0], file: files[fileIndex + move[1]] };
-        if (movementService.canTake(square.contains.props, square, toSquare, files, squares)) {
+        if (_movementService.canTake(square.contains.props, square, toSquare, files, squares)) {
           attacks.push({ 
             name: piece.name,
             colour: piece.colour,
