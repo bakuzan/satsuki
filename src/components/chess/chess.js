@@ -3,6 +3,7 @@ import Board from '../board/board';
 import _pieceService from '../../actions/piece-service';
 import _movementService from '../../actions/movement-service';
 import _helperService from '../../actions/helper-service';
+import _boardService from '../../actions/board-service';
 import './chess.css';
 
 class Chess extends Component {
@@ -48,7 +49,7 @@ class Chess extends Component {
     this.setState({ autoReverseBoard: value });
   }
   handleReverseBoard() {
-    this.setState({ history: _helperService.reverseBoard(this.state.history) });
+    this.setState({ history: _boardService.reverseBoard(this.state.history) });
   }
   handlePieceMovement({ rank, file, contains }) {
     console.log('handle piece movement: ', rank, file, contains);
@@ -80,7 +81,7 @@ class Chess extends Component {
           selected: null,
           isWhiteTurn: !current.isWhiteTurn,
         }]);
-        if (this.state.autoReverseBoard && _helperService.hasCorrectBoardOrientation(current)) {
+        if (this.state.autoReverseBoard && _boardService.hasCorrectBoardOrientation(current)) {
           history = _helperService.reverseBoard(history);
         }
         console.log('%c NEW HISTORY: ', 'color: red;', history);
