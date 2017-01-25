@@ -3,7 +3,7 @@ import _checkService from './check-service';
 
 class MovementService {
   calculatePossibleAttacks(files, squares) {
-    return _checkService.discoverSquaresUnderThreat(this, files, squares);
+    return _checkService.discoverSquaresUnderThreat(files, squares);
   }
   hasFreePath(from, to, match, squares, files) {
     const hasDiagonalMovement = !(match.files || match.ranks);
