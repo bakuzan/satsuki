@@ -1,4 +1,5 @@
 import _helperService from './helper-service';
+import _checkService from './check-service';
 
 class MovementService {
   calculatePossibleAttacks(squares) {
