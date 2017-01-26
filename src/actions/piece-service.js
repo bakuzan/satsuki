@@ -1,6 +1,6 @@
 import React from 'react';
 import Piece from '../components/piece/piece';
-import _movementService from './movement-service';
+import movementService from './movement-service';
 
 class PieceService {
   getStartingPiece(rank, file) {
@@ -21,10 +21,10 @@ class PieceService {
     return contains && this.canSelectPiece(isWhiteTurn, contains.props.colour);
   }
   canMovePiece({ squares, files, selected: { file, rank, contains: { props } } }, newSquare) {
-    return _movementService.canMove(props, { file, rank }, { file: newSquare.file, rank: newSquare.rank }, files, squares);
+    return movementService.canMove(props, { file, rank }, { file: newSquare.file, rank: newSquare.rank }, files, squares);
   }
   canTakePiece({ squares, files, selected: { file, rank, contains: { props } } }, newSquare) {
-    return _movementService.canTake(props, { file, rank }, { file: newSquare.file, rank: newSquare.rank }, files, squares);
+    return movementService.canTake(props, { file, rank }, { file: newSquare.file, rank: newSquare.rank }, files, squares);
   }
   getPieceAttackPattern(piece) {
     const rook = [[0, 1], [0, -1], [1, 0], [-1, 0]];
