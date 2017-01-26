@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Board from '../board/board';
 import ToggleBox from '../toggle-box/toggle-box';
-import _pieceService from '../../actions/piece-service';
-import _movementService from '../../actions/movement-service';
-import _helperService from '../../actions/helper-service';
-import _boardService from '../../actions/board-service';
+import pieceService from '../../actions/piece-service';
+import movementService from '../../actions/movement-service';
+import helperService from '../../actions/helper-service';
+import boardService from '../../actions/board-service';
 import * as Values from '../../constants/values';
 import './chess.css';
 
@@ -16,7 +16,7 @@ class Chess extends Component {
         attacks: [],
         files: Values.files,
         ranks: Values.ranks,
-        squares: _boardService.buildStartingBoard(Array(64).fill(null)),
+        squares: boardService.buildStartingBoard(Array(64).fill(null)),
         selected: null,
         isWhiteTurn: true,
       }],
@@ -30,7 +30,7 @@ class Chess extends Component {
     this.setState({ [name]: value });
   }
   handleReverseBoard() {
-    this.setState({ history: _boardService.reverseBoard(this.state.history) });
+    this.setState({ history: boardService.reverseBoard(this.state.history) });
   }
   handlePieceMovement({ rank, file, contains }) {
     console.log('handle piece movement: ', rank, file, contains);
@@ -38,22 +38,22 @@ class Chess extends Component {
     const current = history[history.length - 1];
 
     if (current.selected === null && !contains) return;
-    if (current.selected === null && !_pieceService.canSelectPiece(current.isWhiteTurn,  contains.props.colour)) return;
+    if (current.selected === null && !pieceService.canSelectPiece(current.isWhiteTurn,  contains.props.colour)) return;
 
     const square = current.squares.find(x => x.rank === rank && x.file === file);
     if (current.selected === null) {
       current.selected = square;
     } else if (current.selected === square) {
       current.selected = null;
-    } else if (_pieceService.selectAnotherPiece(current.isWhiteTurn, current.selected, square)) {
+    } else if (pieceService.selectAnotherPiece(current.isWhiteTurn, current.selected, square)) {
       current.selected = square;
     } else {
       console.log('current', current)
-      const canTake = square.contains && _pieceService.canTakePiece(current, square);
-      const canMove = !square.contains && _pieceService.canMovePiece(current, square);
+      const canTake = square.contains && pieceService.canTakePiece(current, square);
+      const canMove = !square.contains && pieceService.canMovePiece(current, square);
       if (canTake || canMove) {
-        const squares = _movementService.moveToNewPosition(current, { rank, file });
-        const attacks = _movementService.calculatePossibleAttacks(current.files, squares);
+        const squares = movementService.moveToNewPosition(current, { rank, file });
+        const attacks = movementService.calculatePossibleAttacks(current.files, squares);
         history.push(...[{
           files: current.files,
           ranks: current.ranks,
@@ -62,8 +62,8 @@ class Chess extends Component {
           selected: null,
           isWhiteTurn: !current.isWhiteTurn,
         }]);
-        if (this.state.autoReverseBoard && _boardService.hasCorrectBoardOrientation(current)) {
-          history = _boardService.reverseBoard(history);
+        if (this.state.autoReverseBoard && boardService.hasCorrectBoardOrientation(current)) {
+          history = boardService.reverseBoard(history);
         }
         console.log('%c NEW HISTORY: ', 'color: red;', history);
       }
