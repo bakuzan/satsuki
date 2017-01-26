@@ -1,10 +1,6 @@
 import helperService from './helper-service';
-import checkService from './check-service';
 
 class MovementService {
-  calculatePossibleAttacks(files, squares) {
-    return checkService.discoverSquaresUnderThreat(files, squares);
-  }
   hasFreePath(from, to, match, squares, files) {
     const hasDiagonalMovement = !(match.files || match.ranks);
     for(let i = 0, length = squares.length; i < length; i++) {
@@ -75,7 +71,7 @@ class MovementService {
     const toSquare = squares.find(x => x.file === to.file && x.rank === to.rank);
     if (!toSquare) return false;
     if (toSquare.contains && toSquare.contains.props.colour === colour) return false;
-    
+
     switch(name) {
       case 'pawn':
         const fromIndex = files.findIndex(x => x === from.file);

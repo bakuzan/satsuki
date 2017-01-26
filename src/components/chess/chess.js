@@ -3,8 +3,8 @@ import Board from '../board/board';
 import ToggleBox from '../toggle-box/toggle-box';
 import pieceService from '../../actions/piece-service';
 import movementService from '../../actions/movement-service';
-import helperService from '../../actions/helper-service';
 import boardService from '../../actions/board-service';
+import checkService from '../../actions/check-service';
 import * as Values from '../../constants/values';
 import './chess.css';
 
@@ -19,6 +19,7 @@ class Chess extends Component {
         squares: boardService.buildStartingBoard(Array(64).fill(null)),
         selected: null,
         isWhiteTurn: true,
+        inCheck: null
       }],
       autoReverseBoard: false,
     };
@@ -53,7 +54,7 @@ class Chess extends Component {
       const canMove = !square.contains && pieceService.canMovePiece(current, square);
       if (canTake || canMove) {
         const squares = movementService.moveToNewPosition(current, { rank, file });
-        const attacks = movementService.calculatePossibleAttacks(current.files, squares);
+        const { attacks, inCheck } = checkService.calculatePossibleAttacks(current.files, squares);
         history.push(...[{
           files: current.files,
           ranks: current.ranks,
@@ -61,6 +62,7 @@ class Chess extends Component {
           attacks: attacks,
           selected: null,
           isWhiteTurn: !current.isWhiteTurn,
+          inCheck: inCheck,
         }]);
         if (this.state.autoReverseBoard && boardService.hasCorrectBoardOrientation(current)) {
           history = boardService.reverseBoard(history);
