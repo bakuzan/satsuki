@@ -1,6 +1,6 @@
 import { files } from '../constants/values';
-import _pieceService from './piece-service';
-import _helperService from './helper-service';
+import pieceService from './piece-service';
+import helperService from './helper-service';
 
 class BoardService {
   buildStartingBoard(array) {
@@ -20,7 +20,7 @@ class BoardService {
         id: index,
         rank: number,
         file: letter,
-        contains: _pieceService.getStartingPiece(number, letter)
+        contains: pieceService.getStartingPiece(number, letter)
       };
     });
   }
@@ -32,9 +32,9 @@ class BoardService {
   reverseBoard(oldHistory) {
     const history = oldHistory.slice();
     const current = history[history.length - 1];
-    current.squares = _helperService.reverseArray(current.squares);
-    current.files = _helperService.reverseArray(current.files);
-    current.ranks = _helperService.reverseArray(current.ranks);
+    current.squares = helperService.reverseArray(current.squares);
+    current.files = helperService.reverseArray(current.files);
+    current.ranks = helperService.reverseArray(current.ranks);
     return history;
   }
 }
