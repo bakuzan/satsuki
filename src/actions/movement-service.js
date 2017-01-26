@@ -1,26 +1,26 @@
-import _helperService from './helper-service';
-import _checkService from './check-service';
+import helperService from './helper-service';
+import checkService from './check-service';
 
 class MovementService {
   calculatePossibleAttacks(files, squares) {
-    return _checkService.discoverSquaresUnderThreat(files, squares);
+    return checkService.discoverSquaresUnderThreat(files, squares);
   }
   hasFreePath(from, to, match, squares, files) {
     const hasDiagonalMovement = !(match.files || match.ranks);
     for(let i = 0, length = squares.length; i < length; i++) {
       const square = squares[i];
       if (square.contains === null) continue;
-      if (_helperService.isFromSquare(from, square)) continue;
+      if (helperService.isFromSquare(from, square)) continue;
 
       if (hasDiagonalMovement) {
         const fileIndex = files.findIndex(x => x === square.file);
-        if (_helperService.isOnDiagonal(fileIndex, from, to, square)) return false;
+        if (helperService.isOnDiagonal(fileIndex, from, to, square)) return false;
       } else if (match.files && square.file === to.file) {
-        if (_helperService.isBetween(from.rank, to.rank, square.rank)) return false;
+        if (helperService.isBetween(from.rank, to.rank, square.rank)) return false;
       } else {
         const fileIndex = files.findIndex(x => x === square.file);
         if (match.ranks && square.rank === to.rank) {
-          if (_helperService.isBetween(from.fileIndex, to.fileIndex, fileIndex)) return false;
+          if (helperService.isBetween(from.fileIndex, to.fileIndex, fileIndex)) return false;
         }
       }
     }
