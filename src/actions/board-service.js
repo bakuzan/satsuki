@@ -4,7 +4,7 @@ import helperService from './helper-service';
 
 class BoardService {
   buildStartingBoard(array) {
-    let letters = files;
+    let letters = files.slice();
     let lastIndex = -1;
     return array.map((item, index) => {
       const number = 8 - Math.floor(index / 8);

@@ -34,8 +34,10 @@ class CheckService {
   isKingInCheck(attacks) {
     for(let i = 0, length = attacks.length; i < length; i++) {
       const attack = attacks[i];
+      console.log('CHECK?', attack);
       if (!attack.target) continue;
       if (attack.target.name !== 'king') continue;
+      console.log('is King! : ', attack);
       return attack;
     }
     return null;
