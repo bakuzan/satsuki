@@ -14,8 +14,8 @@ class Chess extends Component {
     this.state = {
       history: [{
         attacks: [],
-        files: Values.files,
-        ranks: Values.ranks,
+        files: Values.files.slice(),
+        ranks: Values.ranks.slice(),
         squares: boardService.buildStartingBoard(Array(64).fill(null)),
         selected: null,
         isWhiteTurn: true,
@@ -53,8 +53,14 @@ class Chess extends Component {
       const canTake = square.contains && pieceService.canTakePiece(current, square);
       const canMove = !square.contains && pieceService.canMovePiece(current, square);
       if (canTake || canMove) {
-        const squares = movementService.moveToNewPosition(current, { rank, file });
+        let squares = movementService.moveToNewPosition(current, { rank, file });
         const { attacks, inCheck } = checkService.calculatePossibleAttacks(current.files, squares);
+
+        if (inCheck && inCheck.target.colour === Values.getPlayerColour(current.isWhiteTurn)) {
+          console.log('your still in check...so stop the move!');
+          return;
+        }
+
         history.push(...[{
           files: current.files,
           ranks: current.ranks,
@@ -64,6 +70,7 @@ class Chess extends Component {
           isWhiteTurn: !current.isWhiteTurn,
           inCheck: inCheck,
         }]);
+
         if (this.state.autoReverseBoard && boardService.hasCorrectBoardOrientation(current)) {
           history = boardService.reverseBoard(history);
         }
@@ -75,8 +82,8 @@ class Chess extends Component {
   }
   render() {
     const currentBoard = this.state.history[this.state.history.length - 1];
-    const currentPlayer = `Current turn: ${currentBoard.isWhiteTurn ? 'white' : 'black'}`;
-    const currentAutoReverse = `Auto reverse: ${this.state.autoReverseBoard ? 'ON' : 'OFF' }`;
+    const currentPlayer = `Current turn: ${Values.getPlayerColour(currentBoard.isWhiteTurn)}`;
+    const currentAutoReverse = `Auto reverse: ${Values.getAutoReverseBoard(this.state.autoReverseBoard)}`;
     return (
       <div id="chess-game" className="row">
         <Board currentBoard={currentBoard}

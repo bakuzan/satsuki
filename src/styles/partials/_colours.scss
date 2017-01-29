@@ -1,9 +1,7 @@
-/*
- * GENERAL
- */
+// Colour helpers
 $darken-amount: 5%;
 
-/* Colours*/
+// Colours
 $satsuki-blue: #0117ff;
 $satsuki-white: #fefefe;
 $junketsu-eye-red: #CA273C;
@@ -12,9 +10,12 @@ $satsuki-hair-black: #1A1323;
 $white: #fff;
 $black: #000;
 
-/*
- * USAGES
- */
+$onyx: #0f0f0f;
+$grey: #eee;
+$gold: #ffd700;
+$light-black: #444;
+
+// Usages
 $primary-background: $satsuki-blue;
 $primary-colour: $satsuki-blue;
 $primary-colour-contrast: $satsuki-white;
@@ -22,3 +23,10 @@ $primary-colour-contrast: $satsuki-white;
 $secondary-background: $junketsu-eye-red;
 $secondary-colour: $junketsu-eye-red;
 $secondary-colour-contrast: $satsuki-hair-black;
+
+$board-border-colour: $onyx;
+
+$square-background-light: $grey;
+$square-background-dark: $light-black;
+$square-background-selected: $gold;
+$square-background-in-check: $secondary-background;

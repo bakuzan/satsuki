@@ -10,7 +10,7 @@
   border: {
     width: $border-width;
     style: solid;
-    color: map-get($chess-board, borderColour);
+    color: map-get($chess-board, border-colour);
   }
   .square {
     position: relative;
@@ -18,7 +18,7 @@
     flex-shrink: 0;
     width: #{map-get($square, size)}px;
     height: #{map-get($square, size)}px;
-    background-color: map-get($square, darkBackground);
+    background-color: map-get($square, dark-background);
     &:nth-of-type(16n+16),
     &:nth-of-type(16n+14),
     &:nth-of-type(16n+12),
@@ -27,7 +27,10 @@
     &:nth-of-type(16n+5),
     &:nth-of-type(16n+3),
     &:nth-of-type(16n+1) {
-      background-color: map-get($square, lightBackground);
+      background-color: map-get($square, light-background);
+    }
+    &.in-check {
+      background-color: map-get($square, in-check);
     }
     &.selected {
       background-color: map-get($square, selected);

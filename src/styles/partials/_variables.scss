@@ -1,3 +1,8 @@
+@import "./_colours";
+
+$border-width: 1px;
+$scale-size: 20;
+
 $pieces: (
   black-pawn: 'black_pawn',
   black-rook: 'black_rook',
@@ -13,21 +18,14 @@ $pieces: (
   white-king: 'white_king'
 );
 
-$onyx: #0f0f0f;
-$grey: #eee;
-$gold: #ffd700;
-$light-black: #444;
-
-$border-width: 1px;
-$scale-size: 20;
-
 $square: (
   size: 40,
-  lightBackground: $grey,
-  darkBackground: $light-black,
-  selected: $gold,
+  light-background: $square-background-light,
+  dark-background: $square-background-dark,
+  selected: $square-background-selected,
+  in-check: $square-background-in-check,
 );
 $chess-board: (
   size: map-get($square, size) * 8 + 2,
-  borderColour: $onyx
+  border-colour: $board-border-colour
 );

@@ -1,5 +1,4 @@
 import movementService from './movement-service';
-import pieceService from './piece-service';
 
 class CheckService {
   calculatePossibleAttacks(files, squares) {
@@ -13,18 +12,15 @@ class CheckService {
       const square = squares[i];
       if (!square.contains) continue;
 
-      const fileIndex = files.findIndex(x => x === square.file);
       const piece = square.contains.props;
-      const attackPattern = pieceService.getPieceAttackPattern(piece.name);
-      for(let j = 0, count = attackPattern.length; j < count; j++) {
-        const move = attackPattern[j];
-        const toSquare = { rank: square.rank + move[0], file: files[fileIndex + move[1]] };
-        if (movementService.canTake(square.contains.props, square, toSquare, files, squares)) {
-          const target = squares.find(x => x.rank === toSquare.rank && x.file === toSquare.file);
+      for(let j = 0, count = squares.length; j < count; j++) {
+        const toSquare = squares[j];
+        const to = { rank: toSquare.rank, file: toSquare.file };
+        if (movementService.canTake(piece, square, to, files, squares)) {
           attacks.push({
             attacker: piece,
-            square: target,
-            target: target.contains ? target.contains.props : null
+            square: toSquare,
+            target: toSquare.contains ? toSquare.contains.props : null
           });
         }
       }
@@ -34,10 +30,10 @@ class CheckService {
   isKingInCheck(attacks) {
     for(let i = 0, length = attacks.length; i < length; i++) {
       const attack = attacks[i];
-      console.log('CHECK?', attack);
+
       if (!attack.target) continue;
       if (attack.target.name !== 'king') continue;
-      console.log('is King! : ', attack);
+
       return attack;
     }
     return null;
