@@ -1,4 +1,5 @@
 import movementService from './movement-service';
+import { files } from '../constants/values';
 
 class CheckService {
   calculatePossibleAttacks(files, squares) {
@@ -40,14 +41,47 @@ class CheckService {
     return null;
   }
   checkIsCheckmate(inCheck, attacks, squares) {
-    // implement checkmate logic here...
-    /*
-      1) how many pieces attacking the king
-      2) can king move out of check
-          - if he cant and (1) answer is more the 1 checkmate (?)
-      3) can another piece block check
-      4) can another piece take the attacker.
-    */
+    let kingMovements = [];
+    const fileArray = files.slice(0);
+    const piecesUnderAttack = attacks.filter(x => x.target !== null);
+    const kingAttackers = piecesUnderAttack.filter(x => x.target.name === inCheck.target.name);
+    const counterAttackers = this.alliesForCounterAttack(kingAttackers, piecesUnderAttack);
+    const kingMoves = this.potentialMovesForKing(inCheck, attacks, fileArray, squares);
+    
+    console.log('checkmate: ', kingAttackers, counterAttackers, kingMovements);
+    
+    if (kingMoves.length) return false;
+    if (counterAttackers.length) return false;
+    return true;
+  }
+  alliesForCounterAttack(kingAttackers, piecesUnderAttack) {
+    const counterAttackers = [];
+    for (let i = 0, length = kingAttackers.length; i < length; i++) {
+      const enemy = kingAttackers[i];
+      const allies = piecesUnderAttack.filter(x => x.target.name === enemy.name && x.target.colour === enemy.colour);
+      counterAttackers.concat(allies);
+    }
+    return counterAttackers;
+  }
+  potentialMovesForKing(inCheck, attacks, files, squares) {
+    const kingMovements = [];
+    const kingPotentialMoves = attacks.filter(x => {
+      return x.attacker.name === inCheck.target.name && x.attacker.colour === inCheck.target.colour;
+    });
+    const goodKingMoves = kingPotentialMoves.filter(x => {
+      const badSpot = attacks.filter(y => y.square.rank === x.square.rank && y.square.file === x.square.file && y.attacker.colour !== x.attacker.colour);
+      return badSpot.length === 0;
+    });
+    console.log('all', kingPotentialMoves);
+    console.log('good', goodKingMoves);
+    for (let i = 0, length = goodKingMoves.length; i < length; i++) {
+      const potentialMove = goodKingMoves[i];
+      const to = { rank: potentialMove.square.rank, file: potentialMove.square.file };
+      if (movementService.canMove(inCheck.target, inCheck.square, to, files, squares)) {
+        kingMovements.push(potentialMove.square);
+      }
+    }
+    return kingMovements;
   }
 }
 
