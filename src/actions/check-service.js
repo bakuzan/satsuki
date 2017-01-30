@@ -1,5 +1,5 @@
 import movementService from './movement-service';
-import { files } from '../constants/values';
+import Constants from '../constants/values';
 
 class CheckService {
   calculatePossibleAttacks(files, squares) {
