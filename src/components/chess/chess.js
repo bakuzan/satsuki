@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Board from '../board/board';
 import ToggleBox from '../toggle-box/toggle-box';
+import helperService from '../../actions/helper-service';
 import pieceService from '../../actions/piece-service';
 import movementService from '../../actions/movement-service';
 import boardService from '../../actions/board-service';
@@ -49,29 +50,30 @@ class Chess extends Component {
     } else if (pieceService.selectAnotherPiece(current.isWhiteTurn, current.selected, square)) {
       current.selected = square;
     } else {
-      console.log('current', current)
-      const canTake = square.contains && pieceService.canTakePiece(current, square);
-      const canMove = !square.contains && pieceService.canMovePiece(current, square);
+      const nextStep = helperService.deepCopy(current);
+      console.log('current', nextStep);
+      const canTake = square.contains && pieceService.canTakePiece(nextStep, square);
+      const canMove = !square.contains && pieceService.canMovePiece(nextStep, square);
       if (canTake || canMove) {
         let squares = movementService.moveToNewPosition(current, { rank, file });
-        const { attacks, inCheck } = checkService.calculatePossibleAttacks(current.files, squares);
+        const { attacks, inCheck } = checkService.calculatePossibleAttacks(nextStep.files, squares);
 
-        if (inCheck && inCheck.target.colour === Values.getPlayerColour(current.isWhiteTurn)) {
+        if (inCheck && inCheck.target.colour === Values.getPlayerColour(nextStep.isWhiteTurn)) {
           console.log('your still in check...so stop the move!');
           return;
         }
 
         history.push(...[{
-          files: current.files,
-          ranks: current.ranks,
+          files: nextStep.files,
+          ranks: nextStep.ranks,
           squares: squares,
           attacks: attacks,
           selected: null,
-          isWhiteTurn: !current.isWhiteTurn,
+          isWhiteTurn: !nextStep.isWhiteTurn,
           inCheck: inCheck,
         }]);
 
-        if (this.state.autoReverseBoard && boardService.hasCorrectBoardOrientation(current)) {
+        if (this.state.autoReverseBoard && boardService.hasCorrectBoardOrientation(nextStep)) {
           history = boardService.reverseBoard(history);
         }
         console.log('%c NEW HISTORY: ', 'color: red;', history);
