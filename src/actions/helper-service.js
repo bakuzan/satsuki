@@ -3,8 +3,10 @@ class HelperService {
     let out, v, key;
     out = Array.isArray(o) ? [] : {};
     for (key in o) {
-      v = o[key];
-      out[key] = (v && typeof v === "object") ? this.deepCopy(v) : v;
+      if (key) {
+        v = o[key];
+        out[key] = (v && typeof v === "object") ? this.deepCopy(v) : v;
+      }
     }
     return out;
   }

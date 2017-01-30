@@ -1,4 +1,4 @@
-export const Constants = {
+const Constants = {
   files: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
   ranks: [8, 7, 6, 5, 4, 3, 2, 1],
   colours: {
@@ -19,10 +19,12 @@ export const Constants = {
       off: 'OFF'
     }
   },
-  getPlayerColour: (isWhiteTurn) => {
+  getPlayerColour(isWhiteTurn) {
     return isWhiteTurn ? this.colours.white : this.colours.black;
-  },
-  getAutoReverseBoard: (autoReverseBoard) => {
+  }
+  getAutoReverseBoard(autoReverseBoard) {
     return autoReverseBoard ? this.controls.autoReverse.on : this.controls.autoReverse.off;
   }
 }
+
+export default Constants;

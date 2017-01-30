@@ -42,14 +42,14 @@ class CheckService {
   }
   checkIsCheckmate(inCheck, attacks, squares) {
     let kingMovements = [];
-    const fileArray = files.slice(0);
+    const fileArray = Constants.files.slice(0);
     const piecesUnderAttack = attacks.filter(x => x.target !== null);
     const kingAttackers = piecesUnderAttack.filter(x => x.target.name === inCheck.target.name);
     const counterAttackers = this.alliesForCounterAttack(kingAttackers, piecesUnderAttack);
     const kingMoves = this.potentialMovesForKing(inCheck, attacks, fileArray, squares);
-    
+
     console.log('checkmate: ', kingAttackers, counterAttackers, kingMovements);
-    
+
     if (kingMoves.length) return false;
     if (counterAttackers.length) return false;
     return true;
