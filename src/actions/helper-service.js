@@ -1,4 +1,13 @@
 class HelperService {
+  deepCopy(o) {
+    let out, v, key;
+    out = Array.isArray(o) ? [] : {};
+    for (key in o) {
+      v = o[key];
+      out[key] = (v && typeof v === "object") ? this.deepCopy(v) : v;
+    }
+    return out;
+  }
   reverseArray(array) {
     return array.slice().reverse();
   }
