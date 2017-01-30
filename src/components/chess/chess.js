@@ -6,7 +6,7 @@ import pieceService from '../../actions/piece-service';
 import movementService from '../../actions/movement-service';
 import boardService from '../../actions/board-service';
 import checkService from '../../actions/check-service';
-import * as Values from '../../constants/values';
+import Constants from '../../constants/values';
 import './chess.css';
 
 class Chess extends Component {
@@ -15,8 +15,8 @@ class Chess extends Component {
     this.state = {
       history: [{
         attacks: [],
-        files: Values.files.slice(),
-        ranks: Values.ranks.slice(),
+        files: Constants.files.slice(),
+        ranks: Constants.ranks.slice(),
         squares: boardService.buildStartingBoard(Array(64).fill(null)),
         selected: null,
         isWhiteTurn: true,
@@ -58,7 +58,7 @@ class Chess extends Component {
         let squares = movementService.moveToNewPosition(current, { rank, file });
         const { attacks, inCheck, isMate } = checkService.calculatePossibleAttacks(nextStep.files, squares);
 
-        if (inCheck && inCheck.target.colour === Values.getPlayerColour(nextStep.isWhiteTurn)) return;
+        if (inCheck && inCheck.target.colour === Constants.getPlayerColour(nextStep.isWhiteTurn)) return;
 
         history.push(...[{
           files: nextStep.files,
@@ -82,12 +82,12 @@ class Chess extends Component {
   }
   render() {
     const currentBoard = this.state.history[this.state.history.length - 1];
-    const currentAutoReverse = `Auto reverse: ${Values.getAutoReverseBoard(this.state.autoReverseBoard)}`;
+    const currentAutoReverse = `Auto reverse: ${Constants.getAutoReverseBoard(this.state.autoReverseBoard)}`;
     let status;
     if (currentBoard.winner) {
       status = `Winner: ${currentBoard.inCheck.attacker.colour}`
     } else {
-       status = `Current turn: ${Values.getPlayerColour(currentBoard.isWhiteTurn)}`;
+       status = `Current turn: ${Constants.getPlayerColour(currentBoard.isWhiteTurn)}`;
     }
     
     return (
