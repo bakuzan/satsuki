@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { paths } from '../../constants/paths';
+import Paths from '../../constants/paths';
 import './about.css';
 
 class About extends Component {
@@ -31,7 +31,7 @@ class About extends Component {
             <h4>Pages to visit:</h4>
             <ul>
               <li>
-                <Link to={paths.base}>Home</Link>
+                <Link to={Paths.base}>Home</Link>
                 Start a game!
               </li>
             </ul>
