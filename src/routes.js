@@ -3,19 +3,19 @@ import App from './views/app/app';
 import Chess from './components/chess/chess';
 import About from './views/about/about';
 import PageNotFound from './views/page-not-found/page-not-found';
-import { paths } from './constants/paths';
+import Paths from './constants/paths';
 import {Router, Route, IndexRoute, Redirect, browserHistory} from 'react-router';
 
 class Routes extends Component {
   render() {
     return (
       <Router history={browserHistory}>
-        <Redirect from="/" to={paths.base} />
+        <Redirect from="/" to={Paths.base} />
 
-        <Route path={paths.base} component={App}>
+        <Route path={Paths.base} component={App}>
           <IndexRoute component={Chess} />
 
-          <Route path={paths.about} component={About} />
+          <Route path={Paths.about} component={About} />
         </Route>
 
         <Route path="*" component={PageNotFound} />
