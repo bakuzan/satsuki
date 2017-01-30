@@ -1,3 +1,4 @@
+import Constants from '../constants/values';
 import helperService from './helper-service';
 
 class MovementService {
@@ -33,32 +34,32 @@ class MovementService {
     const rankDiff = Math.abs(to.rank - from.rank);
 
     switch (name) {
-      case 'pawn':
+      case Constants.pieces.pawn:
         if (!match.files) return false;
-        if (colour === 'white') {
+        if (colour === Constants.colours.white) {
           if (from.rank === 2 && [3,4].indexOf(to.rank) !== -1) return true;
           if (rankDiff === 1 && from.rank < to.rank) return true;
-        } else if (colour === 'black') {
+        } else if (colour === Constants.colours.black) {
           if(from.rank === 7 && [6,5].indexOf(to.rank) !== -1) return true;
           if (rankDiff === 1 && from.rank > to.rank) return true;
         }
         return false;
-      case 'rook':
+      case Constants.pieces.rook:
         if (match.files || match.ranks) return this.hasFreePath(from, to, match, squares, files);
         return false;
-      case 'knight':
+      case Constants.pieces.knight:
         if (match.files || match.ranks) return false;
         if (rankDiff === 1 && fileDiff === 2) return true;
         if (rankDiff === 2 && fileDiff === 1) return true;
         return false;
-      case 'bishop':
+      case Constants.pieces.bishop:
         if (fileDiff === rankDiff) return this.hasFreePath(from, to, match, squares, files);
         return false;
-      case 'queen':
+      case Constants.pieces.queen:
         if (match.files || match.ranks) return this.hasFreePath(from, to, match, squares, files);
         if (fileDiff === rankDiff) return this.hasFreePath(from, to, match, squares, files);
         return false;
-      case 'king':
+      case Constants.pieces.king:
         if (match.ranks && fileDiff === 1) return true;
         if (match.files && rankDiff === 1) return true;
         if (rankDiff === 1 && fileDiff === 1) return true;
@@ -73,16 +74,16 @@ class MovementService {
     if (toSquare.contains && toSquare.contains.props.colour === colour) return false;
 
     switch(name) {
-      case 'pawn':
+      case Constants.pieces.pawn:
         const fromIndex = files.findIndex(x => x === from.file);
         const toIndex = files.findIndex(x => x === to.file);
         if (Math.abs(toIndex - fromIndex) === 1 && Math.abs(to.rank - from.rank) === 1) return true;
         return false;
-      case 'rook':
-      case 'knight':
-      case 'bishop':
-      case 'queen':
-      case 'king':
+      case Constants.pieces.rook:
+      case Constants.pieces.knight:
+      case Constants.pieces.bishop:
+      case Constants.pieces.queen:
+      case Constants.pieces.king:
         return this.canMove({ name, colour }, from, to, files, squares);
       default:
         return false;
