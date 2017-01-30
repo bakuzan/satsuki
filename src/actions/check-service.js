@@ -4,7 +4,8 @@ class CheckService {
   calculatePossibleAttacks(files, squares) {
     const attacks = this.discoverSquaresUnderThreat(files, squares);
     const inCheck = this.isKingInCheck(attacks);
-    return { attacks, inCheck };
+    const isMate = this.checkIsCheckmate(inCheck, attacks, squares);
+    return { attacks, inCheck, isMate };
   }
   discoverSquaresUnderThreat(files, squares) {
     const attacks = [];
@@ -37,6 +38,16 @@ class CheckService {
       return attack;
     }
     return null;
+  }
+  checkIsCheckmate(inCheck, attacks, squares) {
+    // implement checkmate logic here...
+    /*
+      1) how many pieces attacking the king
+      2) can king move out of check
+          - if he cant and (1) answer is more the 1 checkmate (?)
+      3) can another piece block check
+      4) can another piece take the attacker.
+    */
   }
 }
 
