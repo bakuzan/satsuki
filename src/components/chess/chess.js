@@ -56,12 +56,9 @@ class Chess extends Component {
       const canMove = !square.contains && pieceService.canMovePiece(nextStep, square);
       if (canTake || canMove) {
         let squares = movementService.moveToNewPosition(current, { rank, file });
-        const { attacks, inCheck } = checkService.calculatePossibleAttacks(nextStep.files, squares);
+        const { attacks, inCheck, isMate } = checkService.calculatePossibleAttacks(nextStep.files, squares);
 
-        if (inCheck && inCheck.target.colour === Values.getPlayerColour(nextStep.isWhiteTurn)) {
-          console.log('your still in check...so stop the move!');
-          return;
-        }
+        if (inCheck && inCheck.target.colour === Values.getPlayerColour(nextStep.isWhiteTurn)) return;
 
         history.push(...[{
           files: nextStep.files,
@@ -71,6 +68,7 @@ class Chess extends Component {
           selected: null,
           isWhiteTurn: !nextStep.isWhiteTurn,
           inCheck: inCheck,
+          winner: inCheck && isMate,
         }]);
 
         if (this.state.autoReverseBoard && boardService.hasCorrectBoardOrientation(nextStep)) {
@@ -84,14 +82,20 @@ class Chess extends Component {
   }
   render() {
     const currentBoard = this.state.history[this.state.history.length - 1];
-    const currentPlayer = `Current turn: ${Values.getPlayerColour(currentBoard.isWhiteTurn)}`;
     const currentAutoReverse = `Auto reverse: ${Values.getAutoReverseBoard(this.state.autoReverseBoard)}`;
+    let status;
+    if (currentBoard.winner) {
+      status = `Winner: ${currentBoard.inCheck.attacker.colour}`
+    } else {
+       status = `Current turn: ${Values.getPlayerColour(currentBoard.isWhiteTurn)}`;
+    }
+    
     return (
       <div id="chess-game" className="row">
         <Board currentBoard={currentBoard}
                handleSelectPiece={this.handlePieceMovement} />
         <div id="game-controls" className="column">
-          <p>{ currentPlayer }</p>
+          <p>{ status }</p>
           <button onClick={() => this.handleReverseBoard()}>
             reverse board
           </button>
