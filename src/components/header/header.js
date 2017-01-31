@@ -9,7 +9,7 @@ import '../../styles/box-model.css';
 class Header extends Component {
   render() {
     return (
-      <div className="satsuki-header center-contents">
+      <nav className="satsuki-header center-contents">
         <Link className="ripple" id="satsuki-svg" to={Paths.base}>
           <SatsukiSvg />
         </Link>
@@ -21,7 +21,7 @@ class Header extends Component {
             </Link>
           </div>
         </div>
-      </div>
+      </nav>
     );
   }
 }
