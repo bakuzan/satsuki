@@ -3,6 +3,20 @@ import pieceService from './piece-service';
 import helperService from './helper-service';
 
 class BoardService {
+  initalGameState() {
+    return {
+      history: [{
+        attacks: [],
+        files: Constants.files.slice(),
+        ranks: Constants.ranks.slice(),
+        squares: this.buildStartingBoard(Array(64).fill(null)),
+        selected: null,
+        isWhiteTurn: true,
+        inCheck: null
+      }],
+      autoReverseBoard: false,
+    };
+  }
   buildStartingBoard(array) {
     let letters = Constants.files.slice();
     let lastIndex = -1;
