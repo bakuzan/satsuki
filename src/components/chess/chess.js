@@ -12,21 +12,13 @@ import './chess.css';
 class Chess extends Component {
   constructor() {
     super();
-    this.state = {
-      history: [{
-        attacks: [],
-        files: Constants.files.slice(),
-        ranks: Constants.ranks.slice(),
-        squares: boardService.buildStartingBoard(Array(64).fill(null)),
-        selected: null,
-        isWhiteTurn: true,
-        inCheck: null
-      }],
-      autoReverseBoard: false,
-    };
+    this.state = boardService.initalGameState();
 
     this.handlePieceMovement = this.handlePieceMovement.bind(this);
     this.handleAutoReverseBoard = this.handleAutoReverseBoard.bind(this);
+  }
+  handleNewGame() {
+    this.setState(boardService.initalGameState());
   }
   handleAutoReverseBoard(name, value) {
     this.setState({ [name]: value });
@@ -95,6 +87,12 @@ class Chess extends Component {
         <Board currentBoard={currentBoard}
                handleSelectPiece={this.handlePieceMovement} />
         <div id="game-controls" className="column">
+          {
+            currentBoard.winner &&
+            <button onClick={() => this.handleNewGame()}>
+              new game
+            </button>
+          }
           <p>{ status }</p>
           <button onClick={() => this.handleReverseBoard()}>
             reverse board
