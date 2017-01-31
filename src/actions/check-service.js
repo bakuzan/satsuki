@@ -58,8 +58,8 @@ class CheckService {
     const counterAttackers = [];
     for (let i = 0, length = kingAttackers.length; i < length; i++) {
       const enemy = kingAttackers[i];
-      const allies = piecesUnderAttack.filter(x => x.target.name === enemy.name && x.target.colour === enemy.colour);
-      counterAttackers.concat(allies);
+      const allies = piecesUnderAttack.filter(x => x.target.name === enemy.attacker.name && x.target.colour === enemy.attacker.colour);
+      counterAttackers.push(...allies);
     }
     return counterAttackers;
   }
