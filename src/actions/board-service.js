@@ -10,6 +10,7 @@ class BoardService {
         files: Constants.files.slice(),
         ranks: Constants.ranks.slice(),
         squares: this.buildStartingBoard(Array(64).fill(null)),
+        graveyard: [],
         selected: null,
         isWhiteTurn: true,
         inCheck: null
