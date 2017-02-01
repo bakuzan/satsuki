@@ -90,13 +90,18 @@ class MovementService {
     }
   }
   moveToNewPosition(currentBoard, to) {
-    const squares = currentBoard.squares.slice();
+    const squares = currentBoard.squares.slice(0);
+    const graveyard = currentBoard.graveyard.slice(0);
     const selected = currentBoard.selected;
     const newSquare = squares.find(x => x.rank === to.rank && x.file === to.file);
     const oldSquare = squares.find(x => x.rank === selected.rank && x.file === selected.file);
+    
+    if (newSquare.contains) {
+      graveyard.push(newSquare.contains);
+    }
     newSquare.contains = selected.contains;
     oldSquare.contains = null;
-    return squares;
+    return { squares, graveyard };
   }
 }
 
