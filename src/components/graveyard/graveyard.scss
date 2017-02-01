@@ -11,7 +11,7 @@
   border: {
     width: $border-width;
     style: dashed;
-    color: map-get($chess-board, borderColour);
+    color: map-get($chess-board, border-colour);
   }
   h4 {
     position: absolute;
