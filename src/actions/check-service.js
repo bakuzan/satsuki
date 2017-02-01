@@ -1,3 +1,4 @@
+import helperService from './helper-service';
 import movementService from './movement-service';
 import Constants from '../constants/values';
 
@@ -85,6 +86,43 @@ class CheckService {
       }
     }
     return kingMovements.length > 0;
+  }
+  alliesForIntercept(inCheck, allies, squares, files) {
+    console.log('incept attackers :', allies);
+    for(let i = 0, length = allies.length; i < length; i++) {
+      const intercept = allies[i];
+      const interceptSquare = intercept.to;
+      console.log('intercept: ', intercept);
+      
+      if (inCheck.from.rank === inCheck.to.Rank && inCheck.to.rank === interceptSquare.rank) {
+        console.log('on same rank: ');
+        if (helperService.isBetween(inCheck.from.rank, inCheck.to.rank, interceptSquare.rank)) return true;
+      }
+      
+      const fromFileIndex = files.findIndex(x => x === inCheck.from.file);
+      const toFileIndex = files.findIndex(x => x === inCheck.to.file);
+      const middleFileIndex = files.findIndex(x => x === interceptSquare.file);
+      if (fromFileIndex === toFileIndex && toFileIndex === middleFileIndex) {
+        console.log('on same file: ');
+        if (helperService.isBetween(fromFileIndex, toFileIndex, middleFileIndex)) return true;
+      }
+      
+      const start = { fileIndex: fromFileIndex, ...inCheck.from };
+      const end = { fileIndex: toFileIndex, ...inCheck.to };
+      console.log('on diagonal: ', start, end);
+      if (helperService.isOnDiagonal(middleFileIndex, start, end, interceptSquare)) return true;
+
+      // Piece attacks are handled...BUT pawn movements need to be accounted for.
+      if (intercept.attacker.name === 'pawn') {
+        allies.push({ 
+          attacker: intercept.attacker,
+          from: intercept.from,
+          // Some logic for the squares pawn can move to.
+        });
+      }
+      console.log(intercept.attacker, ' cannot intercept');
+    }
+    return false;
   }
 }
 
