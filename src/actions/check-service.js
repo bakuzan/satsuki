@@ -114,11 +114,17 @@ class CheckService {
 
       // Piece attacks are handled...BUT pawn movements need to be accounted for.
       if (intercept.attacker.name === 'pawn') {
-        allies.push({ 
-          attacker: intercept.attacker,
-          from: intercept.from,
-          // Some logic for the squares pawn can move to.
-        });
+        const original = helperService.deepCopy(intercept);
+        const firstMove = [2,7].indexOf(original.from.rank) > -1;
+        const rankChange = original.attacker.colour === 'white' ? 1 : -1;
+        
+        original.to.rank += rankChange;
+        allies.push(original);
+        if (firstMove) {
+          const extraSquare = helperService.deepCopy(original);
+          extraSquare.to.rank += rankChange;
+          allies.push(extraSquare);
+        }
       }
       console.log(intercept.attacker, ' cannot intercept');
     }
