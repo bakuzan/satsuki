@@ -48,7 +48,7 @@ class Chess extends Component {
       const canTake = square.contains && pieceService.canTakePiece(nextStep, square);
       const canMove = !square.contains && pieceService.canMovePiece(nextStep, square);
       if (canTake || canMove) {
-        let squares = movementService.moveToNewPosition(current, { rank, file });
+        const { squares, graveyard } = movementService.moveToNewPosition(current, { rank, file });
         const { attacks, inCheck, isMate } = checkService.calculatePossibleAttacks(nextStep.files, squares);
 
         if (inCheck && inCheck.target.colour === Constants.getPlayerColour(nextStep.isWhiteTurn)) return;
@@ -57,6 +57,7 @@ class Chess extends Component {
           files: nextStep.files,
           ranks: nextStep.ranks,
           squares: squares,
+          graveyard: graveyard,
           attacks: attacks,
           selected: null,
           isWhiteTurn: !nextStep.isWhiteTurn,
