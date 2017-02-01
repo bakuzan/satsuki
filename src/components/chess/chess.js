@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Board from '../board/board';
+import Graveyard from '../graveyard/graveyard';
 import ToggleBox from '../toggle-box/toggle-box';
 import helperService from '../../actions/helper-service';
 import pieceService from '../../actions/piece-service';
@@ -84,6 +85,7 @@ class Chess extends Component {
     
     return (
       <div id="chess-game" className="row">
+        <Graveyard pieces={currentBoard.graveyard} />
         <Board currentBoard={currentBoard}
                handleSelectPiece={this.handlePieceMovement} />
         <div id="game-controls" className="column">
