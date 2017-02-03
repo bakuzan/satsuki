@@ -1,5 +1,6 @@
 class HelperService {
   deepCopy(o) {
+    console.log('debug clone: ', o);
     let out, v, key;
     out = Array.isArray(o) ? [] : {};
     for (key in o) {
