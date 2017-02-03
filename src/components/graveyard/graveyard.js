@@ -1,4 +1,7 @@
-class Graveyard extends React.Component {
+import React, { Component } from 'react';
+import './graveyard.css';
+
+class Graveyard extends Component {
   render() {
     return (
       <div className="graveyard">

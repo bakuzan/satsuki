@@ -3,7 +3,7 @@ class HelperService {
     let out, v, key;
     out = Array.isArray(o) ? [] : {};
     for (key in o) {
-      if (key) {
+      if (o.hasOwnProperty(key)) {
         v = o[key];
         out[key] = (v && typeof v === "object") ? this.deepCopy(v) : v;
       }
