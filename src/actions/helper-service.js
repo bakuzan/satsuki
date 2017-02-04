@@ -1,18 +1,31 @@
 class HelperService {
-  deepCopy(o) {
-    console.log('debug clone: ', o);
-    let out, v, key;
-    out = Array.isArray(o) ? [] : {};
-    for (key in o) {
-      if (o.hasOwnProperty(key)) {
-        v = o[key];
-        out[key] = (v && typeof v === "object") ? this.deepCopy(v) : v;
-      }
-    }
-    return out;
+  // deepCopy(o, depth = 0) {
+  //   console.log(`${depth} debug clone: `, o);
+  //   let out, v, key;
+  //   out = Array.isArray(o) ? [] : {};
+  //   for (key in o) {
+  //     if (o.hasOwnProperty(key)) {
+  //       v = o[key];
+  //       out[key] = (v && typeof v === "object" && depth < 7) ? this.deepCopy(v, ++depth) : v;
+  //     }
+  //   }
+  //   return out;
+  // }
+  deepCopy(obj, hash = new WeakMap()) {
+    if (Object(obj) !== obj) return obj; // primitives
+    if (hash.has(obj)) return hash.get(obj); // cyclic reference
+    let result = Array.isArray(obj) ? [] : {};
+                    // obj.constructor ? new obj.constructor() : Object.create(null);
+
+    hash.set(obj, result);
+    if (obj instanceof Map) Array.from(obj, ([key, val]) => result.set(key, this.deepCopy(val, hash)));
+
+    return Object.assign(result, ...Object.keys(obj).map(key =>
+      ({ [key]: this.deepCopy(obj[key], hash) })
+    ));
   }
   reverseArray(array) {
-    return array.slice().reverse();
+    return array.slice(0).reverse();
   }
   isBetween(num1, num2, middleNumber) {
     if (num1 < middleNumber && middleNumber < num2) return true;

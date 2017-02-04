@@ -95,7 +95,7 @@ class MovementService {
     const selected = currentBoard.selected;
     const newSquare = squares.find(x => x.rank === to.rank && x.file === to.file);
     const oldSquare = squares.find(x => x.rank === selected.rank && x.file === selected.file);
-    
+
     if (newSquare.contains) {
       graveyard.push(newSquare.contains);
     }

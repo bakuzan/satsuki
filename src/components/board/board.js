@@ -7,14 +7,14 @@ class Board extends Component {
   renderSquares({ squares, selected, inCheck }) {
     return squares.map((item, index) => {
       item.selected = selected && selected.rank === item.rank && selected.file === item.file;
-      item.inCheck = inCheck && inCheck.square.rank === item.rank && inCheck.square.file === item.file;
+      item.inCheck = inCheck && inCheck.to.rank === item.rank && inCheck.to.file === item.file;
 
       return (<Square key={item.id} {...item} handleSelectPiece={this.props.handleSelectPiece} />);
     });
   }
   render() {
     const currentBoard = this.props.currentBoard;
-    
+
     return (
       <div className="chess-board">
         <Scales files={currentBoard.files}

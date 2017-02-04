@@ -29,7 +29,7 @@ class Chess extends Component {
   }
   handlePieceMovement({ rank, file, contains }) {
     console.log('handle piece movement: ', rank, file, contains);
-    let history = this.state.history.slice();
+    let history = this.state.history.slice(0);
     const current = history[history.length - 1];
 
     if (current.selected === null && !contains) return;
@@ -48,12 +48,12 @@ class Chess extends Component {
       const canTake = square.contains && pieceService.canTakePiece(nextStep, square);
       const canMove = !square.contains && pieceService.canMovePiece(nextStep, square);
       if (canTake || canMove) {
-        const { squares, graveyard } = movementService.moveToNewPosition(current, { rank, file });
+        const { squares, graveyard } = movementService.moveToNewPosition(nextStep, { rank, file });
         const { attacks, inCheck, isMate } = checkService.calculatePossibleAttacks(nextStep.files, squares);
 
         if (inCheck && inCheck.target.colour === Constants.getPlayerColour(nextStep.isWhiteTurn)) return;
 
-        history.push(...[{
+        history.push({
           files: nextStep.files,
           ranks: nextStep.ranks,
           squares: squares,
@@ -63,7 +63,7 @@ class Chess extends Component {
           isWhiteTurn: !nextStep.isWhiteTurn,
           inCheck: inCheck,
           winner: inCheck && isMate,
-        }]);
+        });
 
         if (this.state.autoReverseBoard && boardService.hasCorrectBoardOrientation(nextStep)) {
           history = boardService.reverseBoard(history);
@@ -83,7 +83,7 @@ class Chess extends Component {
     } else {
        status = `Current turn: ${Constants.getPlayerColour(currentBoard.isWhiteTurn)}`;
     }
-    
+
     return (
       <div id="chess-game" className="row">
         <Graveyard pieces={currentBoard.graveyard} />
