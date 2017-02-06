@@ -1,3 +1,4 @@
+import update from 'immutability-helper';
 import Constants from '../constants/values';
 import helperService from './helper-service';
 
@@ -90,17 +91,20 @@ class MovementService {
     }
   }
   moveToNewPosition(currentBoard, to) {
-    const squares = currentBoard.squares.slice(0);
-    const graveyard = currentBoard.graveyard.slice(0);
+    let squares = currentBoard.squares.slice(0);
+    let graveyard = currentBoard.graveyard.slice(0);
     const selected = currentBoard.selected;
-    const newSquare = squares.find(x => x.rank === to.rank && x.file === to.file);
-    const oldSquare = squares.find(x => x.rank === selected.rank && x.file === selected.file);
+    const newSquareIndex = squares.findIndex(x => x.rank === to.rank && x.file === to.file);
+    const newSquare = squares[newSquareIndex];
+    const oldSquareIndex = squares.findIndex(x => x.rank === selected.rank && x.file === selected.file);
 
     if (newSquare.contains) {
-      graveyard.push(newSquare.contains);
+      graveyard = update(currentBoard.graveyard, { $push: [newSquare.contains] });
     }
-    newSquare.contains = selected.contains;
-    oldSquare.contains = null;
+    console.log(newSquareIndex, oldSquareIndex, newSquare, squares[oldSquareIndex]);
+    squares = update(squares, { [newSquareIndex]: { contains: { $set: selected.contains } } });
+    console.log('squares', squares);
+    squares = update(squares, { [oldSquareIndex]: { contains: { $set: null } } });
     return { squares, graveyard };
   }
 }
