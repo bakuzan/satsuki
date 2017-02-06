@@ -1,3 +1,4 @@
+import update from 'immutability-helper';
 import helperService from './helper-service';
 import movementService from './movement-service';
 import Constants from '../constants/values';
@@ -55,8 +56,7 @@ class CheckService {
     pawnMoves.push(pawnMovement);
 
     if (firstMove) {
-      const extraSquare = helperService.deepCopy(pawnMovement);
-      extraSquare.to.rank += rankChange;
+      const extraSquare = update(pawnMovement, { to: { rank: { $apply: function(x) { return x + rankChange; } } } });
       pawnMoves.push(extraSquare);
     }
     return pawnMoves;
