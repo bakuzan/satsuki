@@ -7,8 +7,8 @@ class BoardService {
     return {
       history: [{
         attacks: [],
-        files: Constants.files.slice(),
-        ranks: Constants.ranks.slice(),
+        files: Constants.files.slice(0),
+        ranks: Constants.ranks.slice(0),
         squares: this.buildStartingBoard(Array(64).fill(null)),
         graveyard: [],
         selected: null,
@@ -19,7 +19,7 @@ class BoardService {
     };
   }
   buildStartingBoard(array) {
-    let letters = Constants.files.slice();
+    let letters = Constants.files.slice(0);
     let lastIndex = -1;
     return array.map((item, index) => {
       const number = 8 - Math.floor(index / 8);
@@ -45,7 +45,7 @@ class BoardService {
     return false;
   }
   reverseBoard(oldHistory) {
-    const history = oldHistory.slice();
+    const history = oldHistory.slice(0);
     const current = history[history.length - 1];
     current.squares = helperService.reverseArray(current.squares);
     current.files = helperService.reverseArray(current.files);
