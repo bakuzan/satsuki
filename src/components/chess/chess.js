@@ -43,29 +43,28 @@ class Chess extends Component {
     } else if (pieceService.selectAnotherPiece(current.isWhiteTurn, current.selected, square)) {
       current.selected = square;
     } else {
-      const nextStep = helperService.deepCopy(current);
-      console.log('current', nextStep);
-      const canTake = square.contains && pieceService.canTakePiece(nextStep, square);
-      const canMove = !square.contains && pieceService.canMovePiece(nextStep, square);
+      console.log('current', current);
+      const canTake = square.contains && pieceService.canTakePiece(current, square);
+      const canMove = !square.contains && pieceService.canMovePiece(current, square);
       if (canTake || canMove) {
-        const { squares, graveyard } = movementService.moveToNewPosition(nextStep, { rank, file });
-        const { attacks, inCheck, isMate } = checkService.calculatePossibleAttacks(nextStep.files, squares);
+        const { squares, graveyard } = movementService.moveToNewPosition(current, { rank, file });
+        const { attacks, inCheck, isMate } = checkService.calculatePossibleAttacks(current.files, squares);
 
         if (inCheck && inCheck.target.colour === Constants.getPlayerColour(nextStep.isWhiteTurn)) return;
 
         history.push({
-          files: nextStep.files,
-          ranks: nextStep.ranks,
+          files: current.files.slice(0),
+          ranks: current.ranks.slice(0),
           squares: squares,
           graveyard: graveyard,
           attacks: attacks,
           selected: null,
-          isWhiteTurn: !nextStep.isWhiteTurn,
+          isWhiteTurn: !current.isWhiteTurn,
           inCheck: inCheck,
           winner: inCheck && isMate,
         });
 
-        if (this.state.autoReverseBoard && boardService.hasCorrectBoardOrientation(nextStep)) {
+        if (this.state.autoReverseBoard && boardService.hasCorrectBoardOrientation(current)) {
           history = boardService.reverseBoard(history);
         }
         console.log('%c NEW HISTORY: ', 'color: red;', history);
