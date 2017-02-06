@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Board from '../board/board';
 import Graveyard from '../graveyard/graveyard';
 import ToggleBox from '../toggle-box/toggle-box';
-import helperService from '../../actions/helper-service';
 import pieceService from '../../actions/piece-service';
 import movementService from '../../actions/movement-service';
 import boardService from '../../actions/board-service';
@@ -50,7 +49,7 @@ class Chess extends Component {
         const { squares, graveyard } = movementService.moveToNewPosition(current, { rank, file });
         const { attacks, inCheck, isMate } = checkService.calculatePossibleAttacks(current.files, squares);
 
-        if (inCheck && inCheck.target.colour === Constants.getPlayerColour(nextStep.isWhiteTurn)) return;
+        if (inCheck && inCheck.target.colour === Constants.getPlayerColour(current.isWhiteTurn)) return;
 
         history.push({
           files: current.files.slice(0),
