@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import Board from '../board/board';
 import Graveyard from '../graveyard/graveyard';
 import ToggleBox from '../toggle-box/toggle-box';
+import Rule from '../rule/rule';
 import pieceService from '../../actions/piece-service';
 import movementService from '../../actions/movement-service';
 import boardService from '../../actions/board-service';
 import checkService from '../../actions/check-service';
+import specialRuleService from '../../actions/special-rule-service';
 import Constants from '../../constants/values';
 import './chess.css';
 
@@ -16,6 +18,7 @@ class Chess extends Component {
 
     this.handlePieceMovement = this.handlePieceMovement.bind(this);
     this.handleAutoReverseBoard = this.handleAutoReverseBoard.bind(this);
+    this.handleSpecialRule = this.handleSpecialRule.bind(this);
   }
   handleNewGame() {
     this.setState(boardService.initalGameState());
@@ -26,11 +29,19 @@ class Chess extends Component {
   handleReverseBoard() {
     this.setState({ history: boardService.reverseBoard(this.state.history) });
   }
+  handleSpecialRule(option) {
+    let history = this.state.history.slice(0);
+    history = specialRuleService.applyRule(this.state.specialRule, option, history);
+    this.setState({ history: history, specialRule: null });
+  }
   handlePieceMovement({ rank, file, contains }) {
     console.log('handle piece movement: ', rank, file, contains);
+    let specialRule = null;
     let history = this.state.history.slice(0);
     const current = history[history.length - 1];
 
+    if (current.winner) return;
+    if (this.state.specialRule) return;
     if (current.selected === null && !contains) return;
     if (current.selected === null && !pieceService.canSelectPiece(current.isWhiteTurn,  contains.props.colour)) return;
 
@@ -49,7 +60,9 @@ class Chess extends Component {
         const { squares, graveyard } = movementService.moveToNewPosition(current, { rank, file });
         const { attacks, inCheck, isMate } = checkService.calculatePossibleAttacks(current.files, squares);
 
-        if (inCheck && inCheck.target.colour === Constants.getPlayerColour(current.isWhiteTurn)) return;
+        const currentColour = Constants.getPlayerColour(current.isWhiteTurn);
+        if (inCheck && inCheck.target.colour === currentColour) return;
+        specialRule = specialRuleService.hasPromotion(squares, currentColour);
 
         history.push({
           files: current.files.slice(0),
@@ -70,7 +83,7 @@ class Chess extends Component {
       }
     }
 
-    this.setState({ history: history });
+    this.setState({ history: history, specialRule: specialRule });
   }
   render() {
     const currentBoard = this.state.history[this.state.history.length - 1];
@@ -87,22 +100,29 @@ class Chess extends Component {
         <Graveyard pieces={currentBoard.graveyard} />
         <Board currentBoard={currentBoard}
                handleSelectPiece={this.handlePieceMovement} />
-        <div id="game-controls" className="column">
-          {
-            currentBoard.winner &&
-            <button onClick={() => this.handleNewGame()}>
-              new game
+        {
+          !this.state.specialRule &&
+          <div id="game-controls" className="column">
+            {
+              currentBoard.winner &&
+              <button className="button primary ripple" onClick={() => this.handleNewGame()}>
+                new game
+              </button>
+            }
+            <p>{ status }</p>
+            <button className="button ripple" onClick={() => this.handleReverseBoard()}>
+              reverse board
             </button>
-          }
-          <p>{ status }</p>
-          <button onClick={() => this.handleReverseBoard()}>
-            reverse board
-          </button>
-          <ToggleBox name="autoReverseBoard"
-                     text={currentAutoReverse}
-                     isChecked={this.state.autoReverseBoard}
-                     handleChange={this.handleAutoReverseBoard} />
-        </div>
+            <ToggleBox name="autoReverseBoard"
+                       text={currentAutoReverse}
+                       isChecked={this.state.autoReverseBoard}
+                       handleChange={this.handleAutoReverseBoard} />
+          </div>
+        }
+        {
+          !!this.state.specialRule &&
+          <Rule rule={this.state.specialRule} handleUserInput={this.handleSpecialRule} />
+        }
       </div>
     );
   }

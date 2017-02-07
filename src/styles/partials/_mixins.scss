@@ -1,0 +1,7 @@
+@mixin lightenOrDarken($key, $colour, $percentage) {
+  @if lightness($colour) < 50% {
+    #{$key}: lighten($colour, $percentage);
+  } @else {
+    #{$key}: darken($colour, $percentage);
+  }
+}

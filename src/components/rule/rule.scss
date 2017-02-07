@@ -1,0 +1,20 @@
+@import "../../styles/partials/_colours";
+@import "../chess/chess.scss";
+
+#promotion-dialog {
+  @extend #game-controls;
+  ul {
+    width: 100%;
+    padding: 0;
+    list-style-type: none;
+  }
+  li {
+    padding: 2px;
+    text-align: center;
+    cursor: pointer;
+    &:hover {
+      background-color: $primary-background;
+      color: $primary-colour-contrast;
+    }
+  }
+}

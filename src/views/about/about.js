@@ -17,13 +17,16 @@ class About extends Component {
             Optional move suggestion mode, turn timer and anything else that enters my head to be developed.
           </p>
           <p>
+            Partial support:
+            <ul>
+              <li>promotion</li>
+            </ul>
+          </p>
+          <p>
             Currently unsupported features:
             <ul>
-              <li>check</li>
-              <li>check-mate</li>
               <li>castling</li>
               <li>en passant</li>
-              <li>promotion</li>
               <li>stalemate checking</li>
             </ul>
           </p>
