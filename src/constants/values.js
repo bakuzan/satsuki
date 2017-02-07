@@ -18,6 +18,11 @@ const controls = {
     off: 'OFF'
   }
 };
+const rules = {
+  promotion: 'PROMOTION',
+  castle: 'CASTLE',
+  enPassant: 'EN_PASSANT'
+};
 
 const getPlayerColour = (isWhiteTurn) => {
   return isWhiteTurn ? colours.white : colours.black;
@@ -33,6 +38,7 @@ const Constants = {
   colours, 
   pieces, 
   controls, 
+  rules,
   getPlayerColour, 
   getAutoReverseBoard 
 };
