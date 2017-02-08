@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 import Constants from '../constants/values';
-import movementService from './movement-service';
+import checkService from './check-service';
 
 class SpecialRuleService {
   hasPromotion(squares, colour) {
@@ -13,22 +13,22 @@ class SpecialRuleService {
     const index = history.length - 1;
     const current = history[index];
     const squareIndex = current.squares.findIndex(x => x.rank === rule.rank && x.file === rule.file);
-    const updatedHistory = update(history, { [index]: { 
-      squares: { [squareIndex]: { 
-        contains: { 
-          props: { 
-            name: { $set: option } 
-          } 
-        } 
-      } } 
+    const updatedHistory = update(history, { [index]: {
+      squares: { [squareIndex]: {
+        contains: {
+          props: {
+            name: { $set: option }
+          }
+        }
+      } }
     } });
-    const { attacks, inCheck, isMate } = movementService.calculatePossibleAttacks(current.files, updatedHistory[index].squares);
-    return update(updatedHistory, { 
+    const { attacks, inCheck, isMate } = checkService.calculatePossibleAttacks(current.files, updatedHistory[index].squares);
+    return update(updatedHistory, {
       [index]: {
         attacks : { $set: attacks },
         inCheck : { $set: inCheck },
         winner  : { $set: inCheck && isMate }
-      } 
+      }
     });
   }
   applyRule(rule, option, history) {
