@@ -34,24 +34,29 @@ class Chess extends Component {
     history = specialRuleService.applyRule(this.state.specialRule, option, history);
     this.setState({ history: history, specialRule: null });
   }
+  handleSelectPiece(current, square, currentColour) {
+    current.selected = square;
+    return specialRuleService.canCastle(current, square, currentColour);
+  }
   handlePieceMovement({ rank, file, contains }) {
     console.log('handle piece movement: ', rank, file, contains);
     let specialRule = null;
     let history = this.state.history.slice(0);
     const current = history[history.length - 1];
-
+    const currentColour = Constants.getPlayerColour(current.isWhiteTurn);
+    
     if (current.winner) return;
-    if (this.state.specialRule) return;
+    if (this.state.specialRule && Constants.rules.promotion) return;
     if (current.selected === null && !contains) return;
     if (current.selected === null && !pieceService.canSelectPiece(current.isWhiteTurn,  contains.props.colour)) return;
 
     const square = current.squares.find(x => x.rank === rank && x.file === file);
     if (current.selected === null) {
-      current.selected = square;
+      specialRule = this.handleSelectPiece(current, square, currentColour);
     } else if (current.selected === square) {
       current.selected = null;
     } else if (pieceService.selectAnotherPiece(current.isWhiteTurn, current.selected, square)) {
-      current.selected = square;
+      specialRule = this.handleSelectPiece(current, square, currentColour);
     } else {
       console.log('current', current);
       const canTake = square.contains && pieceService.canTakePiece(current, square);
@@ -60,7 +65,6 @@ class Chess extends Component {
         const { squares, graveyard } = movementService.moveToNewPosition(current, { rank, file });
         const { attacks, inCheck, isMate } = checkService.calculatePossibleAttacks(current.files, squares);
 
-        const currentColour = Constants.getPlayerColour(current.isWhiteTurn);
         if (inCheck && inCheck.target.colour === currentColour) return;
         specialRule = specialRuleService.hasPromotion(squares, currentColour);
 
