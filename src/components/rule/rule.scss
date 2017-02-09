@@ -1,7 +1,7 @@
 @import "../../styles/partials/_colours";
 @import "../chess/chess.scss";
 
-#promotion-dialog {
+#special-rule {
   @extend #game-controls;
   ul {
     width: 100%;
@@ -12,9 +12,9 @@
     padding: 2px;
     text-align: center;
     cursor: pointer;
-    &:hover {
-      background-color: $primary-background;
-      color: $primary-colour-contrast;
+    button {
+      @extend #game-controls;
+      width: 100%;
     }
   }
 }

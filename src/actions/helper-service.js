@@ -1,33 +1,4 @@
 class HelperService {
-//   deepCopy(o, hash = new WeakMap()) {
-//     console.log(`debug clone: `, o);
-//     if (Object(o) !== o) return o; // primitives
-//     if (hash.has(o)) return hash.get(o); // cyclic reference
-
-//     let out, v, key;
-//     out = Array.isArray(o) ? [] : {};
-//     hash.set(o, out);
-//     for (key in o) {
-//       if (o.hasOwnProperty(key)) {
-//         v = o[key];
-//         out[key] = (v && typeof v === 'object') ? this.deepCopy(v, hash) : v;
-//       }
-//     }
-//     return out;
-//   }
-  // deepCopy(obj, hash = new WeakMap()) {
-  //   if (Object(obj) !== obj) return obj; // primitives
-  //   if (hash.has(obj)) return hash.get(obj); // cyclic reference
-  //   let result = Array.isArray(obj) ? [] : {};
-  //                   // obj.constructor ? new obj.constructor() : Object.create(null);
-  //
-  //   hash.set(obj, result);
-  //   if (obj instanceof Map) Array.from(obj, ([key, val]) => result.set(key, this.deepCopy(val, hash)));
-  //
-  //   return Object.assign(result, ...Object.keys(obj).map(key =>
-  //     ({ [key]: this.deepCopy(obj[key], hash) })
-  //   ));
-  // }
   reverseArray(array) {
     return array.slice(0).reverse();
   }

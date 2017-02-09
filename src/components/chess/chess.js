@@ -44,9 +44,9 @@ class Chess extends Component {
     let history = this.state.history.slice(0);
     const current = history[history.length - 1];
     const currentColour = Constants.getPlayerColour(current.isWhiteTurn);
-    
+
     if (current.winner) return;
-    if (this.state.specialRule && Constants.rules.promotion) return;
+    if (this.state.specialRule && this.state.specialRule.name === Constants.rules.promotion) return;
     if (current.selected === null && !contains) return;
     if (current.selected === null && !pieceService.canSelectPiece(current.isWhiteTurn,  contains.props.colour)) return;
 

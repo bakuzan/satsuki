@@ -16,10 +16,10 @@ class SpecialRuleService {
     });
   }
   canCastle({ squares, attacks, inCheck }, square, colour) {
-    const targetRank = colour === 'white' ? 1 : 8;
-    const rule = { name: 'CASTLE', king: true, queen: true, rank: targetRank };
+    const targetRank = colour === Constants.colours.white ? 1 : 8;
+    const rule = { name: Constants.rules.castle, king: true, queen: true, rank: targetRank };
     console.log('can castle: ', square, targetRank);
-    if (square.contains.props.name !== 'king') return null;
+    if (square.contains.props.name !== Constants.pieces.king) return null;
     if (inCheck) return null;
     if (square.rank !== targetRank || square.file !== 'e') return null;
     // TODO Neither the king nor the chosen rook has previously moved.
@@ -27,7 +27,7 @@ class SpecialRuleService {
     this.checkSquaresForSafePassage(rankSquares, 'file', rule);
     console.log('castling check squares: ', rankSquares, rule);
     if (!(rule.king || rule.queen)) return null;
-    
+
     const rankAttacks = attacks.filter(x => x.attacker.colour !== colour && x.to.rank === targetRank);
     this.checkSquaresForSafePassage(rankAttacks, 'to.file', rule);
     console.log('castling check attacks: ', rankAttacks, rule);
@@ -37,32 +37,32 @@ class SpecialRuleService {
     const index = history.length - 1;
     const current = history[index];
     const squareIndex = current.squares.findIndex(x => x.rank === rule.rank && x.file === rule.file);
-    const updatedHistory = update(history, { [index]: { 
-      squares: { [squareIndex]: { 
-        contains: { 
-          props: { 
-            name: { $set: option } 
-          } 
-        } 
-      } } 
+    const updatedHistory = update(history, { [index]: {
+      squares: { [squareIndex]: {
+        contains: {
+          props: {
+            name: { $set: option }
+          }
+        }
+      } }
     } });
     return this.runAttackChecks(updatedHistory, current, index);
   }
   runAttackChecks(history, current, index) {
     const { attacks, inCheck, isMate } = checkService.calculatePossibleAttacks(current.files, history[index].squares);
-    return update(history, { 
+    return update(history, {
       [index]: {
         attacks : { $set: attacks },
         inCheck : { $set: inCheck },
         winner  : { $set: inCheck && isMate }
-      } 
+      }
     });
   }
   updatePieceOnSquare(history, historyIndex, squareIndex, piece) {
-    return update(history, { [historyIndex]: { 
-      squares: { [squareIndex]: { 
-        contains: { $set: piece } 
-      } } 
+    return update(history, { [historyIndex]: {
+      squares: { [squareIndex]: {
+        contains: { $set: piece }
+      } }
     } });
   }
   performCastling(history, index, rule, targetFiles) {
@@ -80,17 +80,17 @@ class SpecialRuleService {
     const index = history.length;
     const current = history[history.length - 1];
     let updatedHistory = update(history, { $push: [current] });
-    const isKingSide = option === 'king side';
+    const isKingSide = option === `${Constants.pieces.king} side`;
     const castling = [{ from: 'e', to: isKingSide ? 'g' : 'c' }];
     const direction = isKingSide ? { from: 'h', to: 'f' } : { from: 'a', to: 'd' };
     castling.push(direction);
     updatedHistory = this.performCastling(updatedHistory, index, rule, castling);
     updatedHistory = this.runAttackChecks(updatedHistory, current, index);
-    return update(updatedHistory, { 
+    return update(updatedHistory, {
       [index]: {
         selected: { $set: null },
         isWhiteTurn : { $set: !current.isWhiteTurn }
-      } 
+      }
     });
   }
   applyRule(rule, option, history) {
