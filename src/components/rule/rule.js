@@ -35,10 +35,7 @@ class Rule extends React.Component {
   }
   renderPromotion() {
     const options = [Constants.pieces.rook, Constants.pieces.knight, Constants.pieces.bishop, Constants.pieces.queen].map((item, index) => {
-      return (
-        <RuleOption text={item} disabled="false"
-                    handleUserInput={this.handleUserInput} />
-      );  
+      return (<RuleOption text={item} handleUserInput={this.handleUserInput} />);  
     });
     return { title: 'Promote your pawn!', options };
   }
