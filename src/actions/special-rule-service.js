@@ -1,6 +1,7 @@
 import update from 'immutability-helper';
 import Constants from '../constants/values';
 import checkService from './check-service';
+import helperService from './helper-service';
 
 class SpecialRuleService {
   hasPromotion(squares, colour) {
@@ -11,8 +12,9 @@ class SpecialRuleService {
   }
   checkSquaresForSafePassage(array, attr, side) {
     array.forEach(x => {
-        if (['f','g'].indexOf(x[attr]) > 0) side.king = false;
-        if (['b','c','d'].indexOf(x[attr]) > 0) side.queen = false;
+      const value = helperService.accessProperty(x, attr);
+      if (['f','g'].indexOf(value) > 0) side.king = false;
+      if (['b','c','d'].indexOf(value) > 0) side.queen = false;
     });
   }
   checkRooks(array, side) {
