@@ -1,4 +1,13 @@
 class HelperService {
+  accessProperty(obj, attributesString) {
+    const attributes = attributesString.split('.');
+    let target = obj;
+    for(let i = 0, length = attributes.length; i < length; i++) {
+      const nextProp = attributes[i];
+      target = target[nextProp];
+    }
+    return target;
+  }
   reverseArray(array) {
     return array.slice(0).reverse();
   }
