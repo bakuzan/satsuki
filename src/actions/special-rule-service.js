@@ -15,6 +15,10 @@ class SpecialRuleService {
         if (['b','c','d'].indexOf(x[attr]) > 0) side.queen = false;
     });
   }
+  checkRooks(array, side) {
+    if (!array.find(x => x.contains.props.name === Constants.pieces.rook && x.file === 'h')) side.king = false;
+    if (!array.find(x => x.contains.props.name === Constants.pieces.rook && x.file === 'a')) side.queen = false;
+  }
   canCastle({ squares, attacks, inCheck }, square, colour) {
     const targetRank = colour === Constants.colours.white ? 1 : 8;
     const rule = { name: Constants.rules.castle, king: true, queen: true, rank: targetRank };
@@ -25,6 +29,7 @@ class SpecialRuleService {
     // TODO Neither the king nor the chosen rook has previously moved.
     const rankSquares = squares.filter(x => x.rank === targetRank && x.contains);
     this.checkSquaresForSafePassage(rankSquares, 'file', rule);
+    this.checkRooks(rankSquares, rule);
     console.log('castling check squares: ', rankSquares, rule);
     if (!(rule.king || rule.queen)) return null;
 
