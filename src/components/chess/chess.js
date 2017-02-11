@@ -48,7 +48,7 @@ class Chess extends Component {
     if (current.winner) return;
     if (this.state.specialRule && this.state.specialRule.name === Constants.rules.promotion) return;
     if (current.selected === null && !contains) return;
-    if (current.selected === null && !pieceService.canSelectPiece(current.isWhiteTurn,  contains.props.colour)) return;
+    if (current.selected === null && !pieceService.canSelectPiece(current.isWhiteTurn,  contains.colour)) return;
 
     const square = current.squares.find(x => x.rank === rank && x.file === file);
     if (current.selected === null) {

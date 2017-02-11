@@ -72,7 +72,7 @@ class MovementService {
   canTake({ name, colour }, from, to, files, squares) {
     const toSquare = squares.find(x => x.file === to.file && x.rank === to.rank);
     if (!toSquare) return false;
-    if (toSquare.contains && toSquare.contains.props.colour === colour) return false;
+    if (toSquare.contains && toSquare.contains.colour === colour) return false;
 
     switch(name) {
       case Constants.pieces.pawn:
@@ -93,7 +93,9 @@ class MovementService {
   moveToNewPosition(currentBoard, to) {
     let squares = currentBoard.squares.slice(0);
     let graveyard = currentBoard.graveyard.slice(0);
-    const selected = currentBoard.selected;
+    const selected = update(currentBoard.selected, {
+      contains: { hasMoved: { $set: true } }
+    });
     const newSquareIndex = squares.findIndex(x => x.rank === to.rank && x.file === to.file);
     const newSquare = squares[newSquareIndex];
     const oldSquareIndex = squares.findIndex(x => x.rank === selected.rank && x.file === selected.file);

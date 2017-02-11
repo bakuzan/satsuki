@@ -6,26 +6,26 @@ import helperService from './helper-service';
 class SpecialRuleService {
   hasPromotion(squares, colour) {
     const targetRank = colour === Constants.colours.white ? 8 : 1;
-    const square = squares.find(x => x.contains && x.contains.props.name === Constants.pieces.pawn && x.rank === targetRank);
+    const square = squares.find(x => x.contains && x.contains.name === Constants.pieces.pawn && x.rank === targetRank);
     if (!square) return null;
     return Object.assign({}, { name: Constants.rules.promotion, rank: square.rank, file: square.file });
   }
   checkSquaresForSafePassage(array, attr, side) {
     array.forEach(x => {
       const value = helperService.accessProperty(x, attr);
-      if (['f','g'].indexOf(value) > 0) side.king = false;
-      if (['b','c','d'].indexOf(value) > 0) side.queen = false;
+      if (['f','g'].indexOf(value) > -1) side.king = false;
+      if (['b','c','d'].indexOf(value) > -1) side.queen = false;
     });
   }
   checkRooks(array, side) {
-    if (!array.find(x => x.contains.props.name === Constants.pieces.rook && x.file === 'h')) side.king = false;
-    if (!array.find(x => x.contains.props.name === Constants.pieces.rook && x.file === 'a')) side.queen = false;
+    if (!array.find(x => x.contains.name === Constants.pieces.rook && !x.contains.hasMoved && x.file === 'h')) side.king = false;
+    if (!array.find(x => x.contains.name === Constants.pieces.rook && !x.contains.hasMoved && x.file === 'a')) side.queen = false;
   }
   canCastle({ squares, attacks, inCheck }, square, colour) {
     const targetRank = colour === Constants.colours.white ? 1 : 8;
     const rule = { name: Constants.rules.castle, king: true, queen: true, rank: targetRank };
     console.log('can castle: ', square, targetRank);
-    if (square.contains.props.name !== Constants.pieces.king) return null;
+    if (square.contains.name !== Constants.pieces.king || square.contains.hasMoved) return null;
     if (inCheck) return null;
     if (square.rank !== targetRank || square.file !== 'e') return null;
     // TODO Neither the king nor the chosen rook has previously moved.
@@ -46,11 +46,7 @@ class SpecialRuleService {
     const squareIndex = current.squares.findIndex(x => x.rank === rule.rank && x.file === rule.file);
     const updatedHistory = update(history, { [index]: {
       squares: { [squareIndex]: {
-        contains: {
-          props: {
-            name: { $set: option }
-          }
-        }
+        contains: { name: { $set: option } }
       } }
     } });
     return this.runAttackChecks(updatedHistory, current, index);

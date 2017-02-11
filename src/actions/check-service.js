@@ -16,7 +16,7 @@ class CheckService {
       const square = squares[i];
       if (!square.contains) continue;
 
-      const piece = square.contains.props;
+      const piece = square.contains;
       for(let j = 0, count = squares.length; j < count; j++) {
         const toSquare = squares[j];
         const to = { rank: toSquare.rank, file: toSquare.file };
@@ -25,7 +25,7 @@ class CheckService {
             attacker: piece,
             from: square,
             to: toSquare,
-            target: toSquare.contains ? toSquare.contains.props : null
+            target: toSquare.contains ? toSquare.contains : null
           });
         }
       }
@@ -46,7 +46,7 @@ class CheckService {
   mapPawnSquareToAttack(square) {
     const pawnMoves = [];
     const pawnMovement = {
-      attacker: square.contains.props,
+      attacker: square.contains,
       from: { rank: square.rank, file: square.file },
       to: { rank: square.rank, file: square.file }
     };
@@ -75,7 +75,7 @@ class CheckService {
     });
     squares.forEach(item => {
       const pieceInstance = item.contains;
-      if (pieceInstance && pieceInstance.props.name === Constants.pieces.pawn && pieceInstance.props.colour === inCheck.target.colour) {
+      if (pieceInstance && pieceInstance.name === Constants.pieces.pawn && pieceInstance.colour === inCheck.target.colour) {
         allies.push(...this.mapPawnSquareToAttack(item));
       }
     });

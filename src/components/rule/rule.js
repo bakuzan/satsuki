@@ -28,14 +28,14 @@ class Rule extends Component {
       { text: `${Constants.pieces.queen} side`, disabled: !rule.queen }
     ].map((item, index) => {
       return (
-        <RuleOption {...item} handleUserInput={this.handleUserInput} />
+        <RuleOption key={index} {...item} handleUserInput={this.handleUserInput} />
       );
     });
     return { title: 'Did you want to castle:', options };
   }
   renderPromotion() {
     const options = [Constants.pieces.rook, Constants.pieces.knight, Constants.pieces.bishop, Constants.pieces.queen].map((item, index) => {
-      return (<RuleOption text={item} handleUserInput={this.handleUserInput} />);
+      return (<RuleOption key={index} text={item} handleUserInput={this.handleUserInput} />);
     });
     return { title: 'Promote your pawn!', options };
   }
