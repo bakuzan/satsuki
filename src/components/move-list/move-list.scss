@@ -1,0 +1,25 @@
+#move-list {
+  width: 10vw;
+  height: 90%;
+  h4 {
+    text-align: center;
+  }
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    list-style-type: none;
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50%;
+      &.title {
+        font-weight: bold;
+      }
+      &.full-width {
+        width: 100%;
+      }
+    }
+  }
+}

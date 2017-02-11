@@ -4,8 +4,8 @@ import './graveyard.css';
 
 class Graveyard extends Component {
   renderTheDead(pieces) {
-    return pieces.map(item => {
-      return (<Piece {...item} />);
+    return pieces.map((item, index) => {
+      return (<Piece key={index} {...item} />);
     });
   }
   render() {

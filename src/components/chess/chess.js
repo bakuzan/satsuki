@@ -3,6 +3,7 @@ import Board from '../board/board';
 import Graveyard from '../graveyard/graveyard';
 import ToggleBox from '../toggle-box/toggle-box';
 import Rule from '../rule/rule';
+import MoveList from '../move-list/move-list';
 import pieceService from '../../actions/piece-service';
 import movementService from '../../actions/movement-service';
 import boardService from '../../actions/board-service';
@@ -41,6 +42,7 @@ class Chess extends Component {
   handlePieceMovement({ rank, file, contains }) {
     console.log('handle piece movement: ', rank, file, contains);
     let specialRule = null;
+    let moves = this.state.moves.slice(0);
     let history = this.state.history.slice(0);
     const current = history[history.length - 1];
     const currentColour = Constants.getPlayerColour(current.isWhiteTurn);
@@ -63,6 +65,7 @@ class Chess extends Component {
       const canMove = !square.contains && pieceService.canMovePiece(current, square);
       if (canTake || canMove) {
         const { squares, graveyard } = movementService.moveToNewPosition(current, { rank, file });
+        moves = movementService.updateMoveList(moves, current, { rank, file });
         const { attacks, inCheck, isMate } = checkService.calculatePossibleAttacks(current.files, squares);
 
         if (inCheck && inCheck.target.colour === currentColour) return;
@@ -87,7 +90,7 @@ class Chess extends Component {
       }
     }
 
-    this.setState({ history: history, specialRule: specialRule });
+    this.setState({ history: history, specialRule: specialRule, moves: moves });
   }
   render() {
     const currentBoard = this.state.history[this.state.history.length - 1];
@@ -98,10 +101,11 @@ class Chess extends Component {
     } else {
        status = `Current turn: ${Constants.getPlayerColour(currentBoard.isWhiteTurn)}`;
     }
-
+    console.log('render chess: ', this.state, this.state.history);
     return (
       <div id="chess-game" className="row">
         <Graveyard pieces={currentBoard.graveyard} />
+        <MoveList moves={this.state.moves} />
         <Board currentBoard={currentBoard}
                handleSelectPiece={this.handlePieceMovement} />
         {

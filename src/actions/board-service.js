@@ -16,6 +16,7 @@ class BoardService {
         inCheck: null
       }],
       autoReverseBoard: false,
+      moves: [],
       specialRule: null,
     };
   }
