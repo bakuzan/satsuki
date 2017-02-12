@@ -23,6 +23,20 @@ const rules = {
   castle: 'CASTLE',
   enPassant: 'EN_PASSANT'
 };
+const pgn = {
+  piece: {
+    king: 'K',
+    queen: 'Q',
+    bishop: 'B',
+    knight: 'N',
+    pawn: ''
+  },
+  capture: 'x',
+  promotion: '=',
+  castle: { king: 'O-O', queen: 'O-O-O' },
+  check: '+',
+  checkmate: '#'
+};
 
 const getPlayerColour = (isWhiteTurn) => {
   return isWhiteTurn ? colours.white : colours.black;
@@ -32,15 +46,16 @@ const getAutoReverseBoard = (autoReverseBoard) => {
   return autoReverseBoard ? controls.autoReverse.on : controls.autoReverse.off;
 }
 
-const Constants = { 
-  files, 
-  ranks, 
-  colours, 
-  pieces, 
-  controls, 
+const Constants = {
+  files,
+  ranks,
+  colours,
+  pieces,
+  controls,
   rules,
-  getPlayerColour, 
-  getAutoReverseBoard 
+  getPlayerColour,
+  getAutoReverseBoard,
+  pgn
 };
 
 export default Constants;

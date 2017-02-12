@@ -3,9 +3,19 @@ import Constants from '../../constants/values';
 import './move-list.css';
 
 class MoveList extends Component {
+  generatePortableGameNotation(item) {
+    console.log('move: ', item);
+    let pgn = '';
+    pgn += Constants.pgn.piece[item.piece.name];
+    if (item.took) pgn += `${item.from.file}${Constants.pgn.capture}`;
+    pgn += `${item.to.file}${item.to.rank}`;
+    if (item.check.inCheck && !item.check.isMate) pgn += Constants.pgn.check;
+    if (item.check.inCheck && item.check.isMate) pgn += Constants.pgn.checkmate;
+    return pgn;
+  }
   renderMoveList(moves) {
     return moves.map((item, index) => {
-      return (<li key={index}>{ item.png }</li>);
+      return (<li key={index}>{ this.generatePortableGameNotation(item) }</li>);
     });
   }
   render() {

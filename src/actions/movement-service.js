@@ -109,7 +109,7 @@ class MovementService {
     squares = update(squares, { [oldSquareIndex]: { contains: { $set: null } } });
     return { squares, graveyard };
   }
-  updateMoveList(moves, currentBoard, to) {
+  updateMoveList(moves, currentBoard, to, check) {
     const squares = currentBoard.squares;
     const selected = currentBoard.selected;
     const newSquare = squares.find(x => x.rank === to.rank && x.file === to.file);
@@ -118,7 +118,8 @@ class MovementService {
       from: { file: oldSquare.file, rank: oldSquare.rank },
       to: { file: newSquare.file, rank: newSquare.rank },
       piece: oldSquare.contains,
-      took: newSquare.contains || null
+      took: newSquare.contains || null,
+      check: check
     });
     return update(moves, { $push: [latestMove] });
   }

@@ -65,11 +65,11 @@ class Chess extends Component {
       const canMove = !square.contains && pieceService.canMovePiece(current, square);
       if (canTake || canMove) {
         const { squares, graveyard } = movementService.moveToNewPosition(current, { rank, file });
-        moves = movementService.updateMoveList(moves, current, { rank, file });
         const { attacks, inCheck, isMate } = checkService.calculatePossibleAttacks(current.files, squares);
 
         if (inCheck && inCheck.target.colour === currentColour) return;
         specialRule = specialRuleService.hasPromotion(squares, currentColour);
+        moves = movementService.updateMoveList(moves, current, { rank, file }, { inCheck, isMate });
 
         history.push({
           files: current.files.slice(0),
