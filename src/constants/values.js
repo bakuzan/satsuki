@@ -29,6 +29,7 @@ const pgn = {
     queen: 'Q',
     bishop: 'B',
     knight: 'N',
+    rook: 'R',
     pawn: ''
   },
   capture: 'x',

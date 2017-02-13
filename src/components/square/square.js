@@ -3,6 +3,7 @@ import Piece from '../piece/piece';
 
 class Square extends Component {
   handleClick() {
+    if (this.props.isReadOnly) return;
     const squareDetails = this.props;
     this.props.handleSelectPiece(squareDetails);
   }

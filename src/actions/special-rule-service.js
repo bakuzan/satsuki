@@ -40,16 +40,22 @@ class SpecialRuleService {
     console.log('castling check attacks: ', rankAttacks, rule);
     return (rule.king || rule.queen) ? rule : null;
   }
-  promote(rule, option, history) {
+  promote(rule, option, history, moves) {
     const index = history.length - 1;
     const current = history[index];
     const squareIndex = current.squares.findIndex(x => x.rank === rule.rank && x.file === rule.file);
-    const updatedHistory = update(history, { [index]: {
+    let updatedHistory = update(history, { [index]: {
       squares: { [squareIndex]: {
         contains: { name: { $set: option } }
       } }
     } });
-    return this.runAttackChecks(updatedHistory, current, index);
+    updatedHistory = this.runAttackChecks(updatedHistory, current, index);
+    const newCurrent = updatedHistory[updatedHistory.length - 1];
+    const updatedMoves = update(moves, { [moves.length - 1]: {
+      promoteTo: { $set: option },
+      check: { $set: Object.assign({}, { inCheck: newCurrent.inCheck, winner: newCurrent.winner }) }
+    } });
+    return { history: updatedHistory, moves: updatedMoves };
   }
   runAttackChecks(history, current, index) {
     const { attacks, inCheck, isMate } = checkService.calculatePossibleAttacks(current.files, history[index].squares);
@@ -79,7 +85,7 @@ class SpecialRuleService {
     }
     return history;
   }
-  castle(rule, option, history) {
+  castle(rule, option, history, moves) {
     const index = history.length;
     const current = history[history.length - 1];
     let updatedHistory = update(history, { $push: [current] });
@@ -89,22 +95,25 @@ class SpecialRuleService {
     castling.push(direction);
     updatedHistory = this.performCastling(updatedHistory, index, rule, castling);
     updatedHistory = this.runAttackChecks(updatedHistory, current, index);
-    return update(updatedHistory, {
+    updatedHistory = update(updatedHistory, {
       [index]: {
         selected: { $set: null },
         isWhiteTurn : { $set: !current.isWhiteTurn }
       }
     });
+    const castlingMove = Object.assign({}, { specialRule: rule, isKingSide });
+    const updatedMoves = update(moves, { $push: [castlingMove] });
+    return { history: updatedHistory, moves: updatedMoves };
   }
-  applyRule(rule, option, history) {
-    console.log('apply rule!', rule, option);
-    switch(rule.name) {
+  applyRule({ specialRule, history, moves }, option) {
+    console.log('apply rule!', specialRule, option);
+    switch(specialRule.name) {
       case Constants.rules.promotion:
-        return this.promote(rule, option, history);
+        return this.promote(specialRule, option, history, moves);
       case Constants.rules.castle:
-        return this.castle(rule, option, history);
+        return this.castle(specialRule, option, history, moves);
       default:
-        return history;
+        return { history, moves };
     }
   }
 }

@@ -6,16 +6,28 @@ class MoveList extends Component {
   generatePortableGameNotation(item) {
     console.log('move: ', item);
     let pgn = '';
+    if (item.specialRule && item.specialRule.name === Constants.rules.castle) {
+      return item.isKingSide ? Constants.pgn.castle.king : Constants.pgn.castle.queen;
+    }
     pgn += Constants.pgn.piece[item.piece.name];
-    if (item.took) pgn += `${item.from.file}${Constants.pgn.capture}`;
+    if (item.took) pgn += `${Constants.pgn.capture}`;
     pgn += `${item.to.file}${item.to.rank}`;
+    if (item.specialRule && item.specialRule.name === Constants.rules.promotion) {
+      pgn += `${Constants.pgn.promotion}${Constants.pgn.piece[item.promoteTo] || ''}`
+    }
     if (item.check.inCheck && !item.check.isMate) pgn += Constants.pgn.check;
     if (item.check.inCheck && item.check.isMate) pgn += Constants.pgn.checkmate;
     return pgn;
   }
   renderMoveList(moves) {
     return moves.map((item, index) => {
-      return (<li key={index}>{ this.generatePortableGameNotation(item) }</li>);
+      return (
+        <li key={index}>
+          <button type="button" className="button-link" onClick={() => this.props.goToMove(index + 1)}>
+            { this.generatePortableGameNotation(item) }
+          </button>
+        </li>
+      );
     });
   }
   render() {

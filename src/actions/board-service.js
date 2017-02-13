@@ -17,6 +17,7 @@ class BoardService {
       }],
       autoReverseBoard: false,
       moves: [],
+      moveIndex: null,
       specialRule: null,
     };
   }

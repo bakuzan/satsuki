@@ -20,6 +20,7 @@ class Chess extends Component {
     this.handlePieceMovement = this.handlePieceMovement.bind(this);
     this.handleAutoReverseBoard = this.handleAutoReverseBoard.bind(this);
     this.handleSpecialRule = this.handleSpecialRule.bind(this);
+    this.handlePreviousMoveViewing = this.handlePreviousMoveViewing.bind(this);
   }
   handleNewGame() {
     this.setState(boardService.initalGameState());
@@ -30,10 +31,14 @@ class Chess extends Component {
   handleReverseBoard() {
     this.setState({ history: boardService.reverseBoard(this.state.history) });
   }
+  handlePreviousMoveViewing(index) {
+    const newIndex = index === (this.state.history.length - 1) ? null : index;
+    console.log('previous move: ', index, newIndex);
+    this.setState({ moveIndex: newIndex });
+  }
   handleSpecialRule(option) {
-    let history = this.state.history.slice(0);
-    history = specialRuleService.applyRule(this.state.specialRule, option, history);
-    this.setState({ history: history, specialRule: null });
+    const { history, moves } = specialRuleService.applyRule(this.state, option);
+    this.setState({ history: history, specialRule: null, moves: moves });
   }
   handleSelectPiece(current, square, currentColour) {
     current.selected = square;
@@ -69,7 +74,7 @@ class Chess extends Component {
 
         if (inCheck && inCheck.target.colour === currentColour) return;
         specialRule = specialRuleService.hasPromotion(squares, currentColour);
-        moves = movementService.updateMoveList(moves, current, { rank, file }, { inCheck, isMate });
+        moves = movementService.updateMoveList(moves, current, { rank, file }, { inCheck, isMate }, specialRule);
 
         history.push({
           files: current.files.slice(0),
@@ -93,7 +98,8 @@ class Chess extends Component {
     this.setState({ history: history, specialRule: specialRule, moves: moves });
   }
   render() {
-    const currentBoard = this.state.history[this.state.history.length - 1];
+    const boardIndex = this.state.moveIndex || this.state.history.length - 1;
+    const currentBoard = this.state.history[boardIndex];
     const currentAutoReverse = `Auto reverse: ${Constants.getAutoReverseBoard(this.state.autoReverseBoard)}`;
     let status;
     if (currentBoard.winner) {
@@ -105,8 +111,9 @@ class Chess extends Component {
     return (
       <div id="chess-game" className="row">
         <Graveyard pieces={currentBoard.graveyard} />
-        <MoveList moves={this.state.moves} />
+        <MoveList moves={this.state.moves} goToMove={this.handlePreviousMoveViewing} />
         <Board currentBoard={currentBoard}
+               isReadOnly={this.state.moveIndex !== null}
                handleSelectPiece={this.handlePieceMovement} />
         {
           !this.state.specialRule &&
