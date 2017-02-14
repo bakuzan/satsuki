@@ -1,3 +1,5 @@
+@import "../../styles/partials/_colours";
+
 #move-list {
   width: 10vw;
   height: 90%;
@@ -17,8 +19,15 @@
       &.title {
         font-weight: bold;
       }
-      &.full-width {
-        width: 100%;
+      &.selected {
+        * {
+          font-weight: bold;
+        }
+        &.read-only {
+          .button-link {
+            color: $secondary-colour;
+          }
+        }
       }
     }
   }

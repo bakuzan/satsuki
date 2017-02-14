@@ -15,12 +15,18 @@ class Rule extends Component {
         return this.renderPromotion();
       case Constants.rules.castle:
         return this.renderCastle(rule);
+      case Constants.rules.enPassant:
+        return this.renderEnPassant(rule);
       default:
         return (<p>Unhandled rule!</p>);
     }
   }
   handleUserInput(option) {
     this.props.handleUserInput(option);
+  }
+  renderEnPassant(rule) {
+    const options = [<RuleOption {...item} text="Yes, en passant!" handleUserInput={this.handleUserInput} />];
+    return { title: 'Did you want to en passant?', options };
   }
   renderCastle(rule) {
     const options = [

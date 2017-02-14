@@ -42,7 +42,9 @@ class Chess extends Component {
   }
   handleSelectPiece(current, square, currentColour) {
     current.selected = square;
-    return specialRuleService.canCastle(current, square, currentColour);
+    let specialRule = specialRuleService.canCastle(current, square, currentColour);
+    if (specialRule) return specialRule;
+    return specialRuleService.canEnPassant(current, square, currentColour, this.state.moves);
   }
   handlePieceMovement({ rank, file, contains }) {
     console.log('handle piece movement: ', rank, file, contains);
@@ -111,7 +113,9 @@ class Chess extends Component {
     return (
       <div id="chess-game" className="row">
         <Graveyard pieces={currentBoard.graveyard} />
-        <MoveList moves={this.state.moves} goToMove={this.handlePreviousMoveViewing} />
+        <MoveList moves={this.state.moves}
+                  currentMove={this.state.moveIndex}
+                  goToMove={this.handlePreviousMoveViewing} />
         <Board currentBoard={currentBoard}
                isReadOnly={this.state.moveIndex !== null}
                handleSelectPiece={this.handlePieceMovement} />

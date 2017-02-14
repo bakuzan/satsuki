@@ -13,16 +13,20 @@ class MoveList extends Component {
     if (item.took) pgn += `${Constants.pgn.capture}`;
     pgn += `${item.to.file}${item.to.rank}`;
     if (item.specialRule && item.specialRule.name === Constants.rules.promotion) {
-      pgn += `${Constants.pgn.promotion}${Constants.pgn.piece[item.promoteTo] || ''}`
+      pgn += `${Constants.pgn.promotion}${Constants.pgn.piece[item.promoteTo] || ''}`;
     }
     if (item.check.inCheck && !item.check.isMate) pgn += Constants.pgn.check;
     if (item.check.inCheck && item.check.isMate) pgn += Constants.pgn.checkmate;
     return pgn;
   }
   renderMoveList(moves) {
+    const currentMove = this.props.currentMove === null ? moves.length - 1 : this.props.currentMove;
+    const viewingPast = !(this.props.currentMove === null);
     return moves.map((item, index) => {
+      const moveIndex = viewingPast ? (index + 1) : index;
+      const classes = `${currentMove === moveIndex ? 'selected' : ''}${viewingPast ? ' read-only' : ''}`;
       return (
-        <li key={index}>
+        <li key={index} className={classes}>
           <button type="button" className="button-link" onClick={() => this.props.goToMove(index + 1)}>
             { this.generatePortableGameNotation(item) }
           </button>

@@ -14,9 +14,10 @@ class Board extends Component {
   }
   render() {
     const currentBoard = this.props.currentBoard;
+    const readOnly = this.props.isReadOnly ? ' read-only' : '';
 
     return (
-      <div className="chess-board">
+      <div className={`chess-board${readOnly}`}>
         <Scales files={currentBoard.files}
                 ranks={currentBoard.ranks} />
         { this.renderSquares(currentBoard) }
