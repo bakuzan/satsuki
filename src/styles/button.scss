@@ -32,3 +32,30 @@
     @include lightenOrDarken("background-color", $primary-background, $darken-amount * 3);
   }
 }
+
+.button-link {
+  display: flex;
+  justify-content: center;
+  background: inherit;
+  color: $anchor-colour;
+  appearance: none;
+  border: none;
+  text-decoration: underline;
+  cursor: pointer;
+  &:focus, &:active {
+    color: $anchor-colour;
+  }
+  &:hover {
+   color: $anchor-colour-hover;
+  }
+}
+
+.button-link.primary {
+  color: $primary-colour;
+  &:focus, &:active {
+    color: $primary-colour;
+  }
+  &:hover {
+   color: darken($primary-colour, $darken-amount);
+  }
+}

@@ -15,6 +15,9 @@ $grey: #eee;
 $gold: #ffd700;
 $light-black: #444;
 
+$link-blue: #0000EE;
+$bing-link-blue: #001ba0;
+
 // Usages
 $primary-background: $satsuki-blue;
 $primary-colour: $satsuki-blue;
@@ -30,3 +33,6 @@ $square-background-light: $grey;
 $square-background-dark: $light-black;
 $square-background-selected: $gold;
 $square-background-in-check: $secondary-background;
+
+$anchor-colour: $bing-link-blue;
+$anchor-colour-hover: $link-blue;
