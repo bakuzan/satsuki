@@ -16,6 +16,9 @@ class Header extends Component {
         <h1>SATSUKI</h1>
         <div id="navigation-links">
           <div className="flex-right center-vertically">
+            <Link className="ripple" to={`${Paths.base}${Paths.howToPlay}`}>
+              Learn
+            </Link>
             <Link className="ripple" to={`${Paths.base}${Paths.about}`}>
               About
             </Link>
