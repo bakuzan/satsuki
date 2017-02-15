@@ -13,23 +13,20 @@ class About extends Component {
         </header>
         <div className="content">
           <p>
-            Chess. No AI. Reversable view of the table.
-            Optional move suggestion mode, turn timer and anything else that enters my head to be developed.
+            <strong>Chess. No AI.</strong>
+            <br />
+            If you're new to chess or want to refresh yourself on the rules visit our how to play pages!
+            <Link to={Paths.howToPlay}>How to play</Link>
           </p>
-          <p>
-            Partial support:
-            <ul>
-              <li>promotion</li>
-            </ul>
-          </p>
-          <p>
+          <div>
             Currently unsupported features:
             <ul>
-              <li>castling</li>
-              <li>en passant</li>
               <li>stalemate checking</li>
+              <li>resignation</li>
+              <li>timer</li>
+              <li>move suggestion</li>
             </ul>
-          </p>
+          </div>
           <div id="about-links">
             <h4>Pages to visit:</h4>
             <ul>
