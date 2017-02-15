@@ -93,6 +93,14 @@ class SpecialRuleService {
       } }
     } });
   }
+  setToNextTurn(history, current, index) {
+    return update(history, {
+      [index]: {
+        selected: { $set: null },
+        isWhiteTurn : { $set: !current.isWhiteTurn }
+      }
+    });
+  }
   performCastling(history, index, rule, targetFiles) {
     const current = history[index];
     for(let i = 0; i < 2; i++) {
@@ -114,31 +122,41 @@ class SpecialRuleService {
     castling.push(direction);
     updatedHistory = this.performCastling(updatedHistory, index, rule, castling);
     updatedHistory = this.runAttackChecks(updatedHistory, current, index);
-    updatedHistory = update(updatedHistory, {
-      [index]: {
-        selected: { $set: null },
-        isWhiteTurn : { $set: !current.isWhiteTurn }
-      }
-    });
+    updatedHistory = this.setToNextTurn(updatedHistory, current, index);
     const castlingMove = Object.assign({}, { specialRule: rule, isKingSide });
     const updatedMoves = update(moves, { $push: [castlingMove] });
     return { history: updatedHistory, moves: updatedMoves };
   }
+  performPassing(history, index, rule) {
+    const current = history[index];
+    let { squares, graveyard } = movementService.moveToNewPosition(current, rule.to);
+    const passingIndex = squares.findIndex(x => x.rank === rule.pass.rank && x.file === rule.pass.file);
+    graveyard = update(graveyard, { $push: [squares[passingIndex].contains] });
+    squares = update(squares, { [passingIndex]: { 
+      contains: { $set: null }
+    } });
+    return update(history, { [index]: {
+      graveyard: { $set: graveyard },
+      squares: { $set: squares }
+    } });
+  }
   enPassant(rule, option, history, moves) {
-    // const index = history.length;
-    // const current = history[history.length - 1];
-    // let updatedHistory = update(history, { $push: [current] });
-    // updatedHistory = this.performCastling(updatedHistory, index, rule, castling);
-    // updatedHistory = this.runAttackChecks(updatedHistory, current, index);
-    // updatedHistory = update(updatedHistory, {
-    //   [index]: {
-    //     selected: { $set: null },
-    //     isWhiteTurn : { $set: !current.isWhiteTurn }
-    //   }
-    // });
-    // const castlingMove = Object.assign({}, { specialRule: rule, isKingSide });
-    // const updatedMoves = update(moves, { $push: [castlingMove] });
-    // return { history: updatedHistory, moves: updatedMoves };
+    const index = history.length;
+    const current = history[history.length - 1];
+    let updatedHistory = update(history, { $push: [current] });
+    updatedHistory = this.performPassing(updatedHistory, index, rule);
+    updatedHistory = this.runAttackChecks(updatedHistory, current, index);
+    updatedHistory = this.setToNextTurn(updatedHistory, current, index);
+    const lastestBoard = updatedHistory[index];
+    const passingMove = Object.assign({}, { 
+      from: { rank: current.selected.rank, file: current.selected.file },
+      to: rule.to, 
+      piece: current.selected.contains,
+      took: rule.pass.contains,
+      check: { check: lastestBoard.inCheck, isMate: lastestBoard.winner }
+    });
+    const updatedMoves = update(moves, { $push: [passingMove] });
+    return { history: updatedHistory, moves: updatedMoves };
   }
   applyRule({ specialRule, history, moves }, option) {
     console.log('apply rule!', specialRule, option);
