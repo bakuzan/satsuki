@@ -16,7 +16,7 @@ class About extends Component {
             <strong>Chess. No AI.</strong>
             <br />
             If you're new to chess or want to refresh yourself on the rules visit our how to play pages!
-            <Link to={Paths.howToPlay}>How to play</Link>
+            <Link to={`${Paths.base}${Paths.howToPlay}`}>How to play</Link>
           </p>
           <div>
             Currently unsupported features:

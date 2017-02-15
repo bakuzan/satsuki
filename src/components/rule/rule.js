@@ -25,7 +25,7 @@ class Rule extends Component {
     this.props.handleUserInput(option);
   }
   renderEnPassant(rule) {
-    const options = [<RuleOption text="Yes, en passant!" handleUserInput={this.handleUserInput} />];
+    const options = [<RuleOption key={rule.name} text="Yes, en passant!" handleUserInput={this.handleUserInput} />];
     return { title: 'Did you want to en passant?', options };
   }
   renderCastle(rule) {

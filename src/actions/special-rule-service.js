@@ -1,5 +1,6 @@
 import update from 'immutability-helper';
 import Constants from '../constants/values';
+import movementService from './movement-service';
 import checkService from './check-service';
 import helperService from './helper-service';
 
@@ -43,13 +44,17 @@ class SpecialRuleService {
   canEnPassant({ squares, attacks, inCheck, files }, square, colour, moves) {
     const targetRank = colour === Constants.colours.white ? 5 : 4;
     const rankChange = colour === Constants.colours.white ? 1 : -1;
-    const rule = { name: Constants.rules.enPassant, to: { rank: null, file: null } };
+    const rule = {
+      name: Constants.rules.enPassant,
+      to: { rank: null, file: null },
+      pass: { rank: null, file: null }
+    };
     if (square.contains.name !== 'pawn') return null;
     if (square.rank !== targetRank) return null;
     // add check here to see if last move was a pawn advancing 2 squares to targetRank
     // if a pawn moves double to avoid a challenge, you can take the pawn as though it moved only 1 square.
     const squareFileIndex = files.findIndex(x => x === square.file);
-    const lastMove = moves.slice(-1);
+    const lastMove = moves.slice(-1)[0];
     if (!lastMove) return null;
     if (lastMove.piece.name !== Constants.pieces.pawn) return null;
     if (lastMove.to.rank !== targetRank) return null;
@@ -57,7 +62,10 @@ class SpecialRuleService {
     const lastMoveFileIndex = files.findIndex(x => x === lastMove.to.file);
     if (Math.abs(squareFileIndex - lastMoveFileIndex) !== 1) return null;
     console.log('can en passant: ', lastMove);
-    return Object.assign(rule, { to: { rank: lastMove.to.rank + rankChange, file: lastMove.to.file } })
+    return Object.assign(rule, { 
+      to: { rank: lastMove.to.rank + rankChange, file: lastMove.to.file },
+      pass: { rank: lastMove.to.rank, file: lastMove.to.file, contains: lastMove.piece }
+    });
   }
   promote(rule, option, history, moves) {
     const index = history.length - 1;
@@ -132,7 +140,7 @@ class SpecialRuleService {
     let { squares, graveyard } = movementService.moveToNewPosition(current, rule.to);
     const passingIndex = squares.findIndex(x => x.rank === rule.pass.rank && x.file === rule.pass.file);
     graveyard = update(graveyard, { $push: [squares[passingIndex].contains] });
-    squares = update(squares, { [passingIndex]: { 
+    squares = update(squares, { [passingIndex]: {
       contains: { $set: null }
     } });
     return update(history, { [index]: {
@@ -148,9 +156,9 @@ class SpecialRuleService {
     updatedHistory = this.runAttackChecks(updatedHistory, current, index);
     updatedHistory = this.setToNextTurn(updatedHistory, current, index);
     const lastestBoard = updatedHistory[index];
-    const passingMove = Object.assign({}, { 
+    const passingMove = Object.assign({}, {
       from: { rank: current.selected.rank, file: current.selected.file },
-      to: rule.to, 
+      to: rule.to,
       piece: current.selected.contains,
       took: rule.pass.contains,
       check: { inCheck: lastestBoard.inCheck, isMate: lastestBoard.winner }
