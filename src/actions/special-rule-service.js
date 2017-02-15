@@ -153,7 +153,7 @@ class SpecialRuleService {
       to: rule.to, 
       piece: current.selected.contains,
       took: rule.pass.contains,
-      check: { check: lastestBoard.inCheck, isMate: lastestBoard.winner }
+      check: { inCheck: lastestBoard.inCheck, isMate: lastestBoard.winner }
     });
     const updatedMoves = update(moves, { $push: [passingMove] });
     return { history: updatedHistory, moves: updatedMoves };
