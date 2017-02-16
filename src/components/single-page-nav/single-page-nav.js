@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import navigationWorm from '../../actions/navigation-worm';
+import './single-page-nav.css';
 
 class SinglePageNav extends Component {
   constructor() {
