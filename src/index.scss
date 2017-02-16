@@ -15,3 +15,15 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+// test for how-to-play
+section {
+  > div {
+    min-height: 200px;
+    section {
+      > div {
+        min-height: 100px;
+      }
+    }
+  }
+}

@@ -1,6 +1,8 @@
+import Constants from '../constants/values';
+
 class NavigationWorm {
   constructor() {
-    this.pathLength;
+    this.pathLength = null;
   }
   drawPath(nav, wormPath) {
     let navItems = [].slice.call(nav.querySelectorAll('li'));
@@ -37,7 +39,7 @@ class NavigationWorm {
 
         // Set the current path so that we can measure it
         wormPath.setAttribute('d', path.join(' '));
-        item.pathStart = wormPath.getTotalLength() || 0;    
+        item.pathStart = wormPath.getTotalLength() || 0;
         path.push('L', x, y + height);
       }
 
@@ -58,14 +60,14 @@ class NavigationWorm {
     navItems.forEach(item => {
       const targetBounds = item.target.getBoundingClientRect();
 
-      if(targetBounds.bottom > windowHeight * TOP_MARGIN && targetBounds.top < windowHeight * (1 - BOTTOM_MARGIN)) {
+      if(targetBounds.bottom > windowHeight * Constants.worm.topMargin && targetBounds.top < windowHeight * (1 - Constants.worm.bottomMargin)) {
         pathStart = Math.min(item.pathStart, pathStart);
         pathEnd = Math.max(item.pathEnd, pathEnd);
         visibleItems += 1;
         item.listItem.classList.add('visible');
       } else {
         item.listItem.classList.remove('visible');
-      }    
+      }
     });
 
     // Specify the visible path or hide the path altogether

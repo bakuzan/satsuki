@@ -1,18 +1,18 @@
 const HowToPlayValues = {
   menu: [
-      { 
-        id: 'introduction', 
-        title: 'Introduction', 
+      {
+        id: 'introduction',
+        title: 'Introduction',
         children: []
       },
       {
-        id: 'setup', 
-        title: 'Setup', 
+        id: 'setup',
+        title: 'Setup',
         children: []
       },
       {
-        id: 'movement', 
-        title: 'Movement', 
+        id: 'movement',
+        title: 'Movement',
         children: [
           { id: 'king', title: 'King' },
           { id: 'queen', title: 'Queen' },
@@ -36,7 +36,7 @@ const HowToPlayValues = {
         title: 'Check',
         children: []
       }
-    ];
+    ]
 };
 
 export default HowToPlayValues;

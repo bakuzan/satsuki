@@ -47,6 +47,11 @@ const getAutoReverseBoard = (autoReverseBoard) => {
   return autoReverseBoard ? controls.autoReverse.on : controls.autoReverse.off;
 }
 
+const worm = {
+  topMargin: 0.1,
+  bottomMargin: 0.2
+}
+
 const Constants = {
   files,
   ranks,
@@ -56,7 +61,8 @@ const Constants = {
   rules,
   getPlayerColour,
   getAutoReverseBoard,
-  pgn
+  pgn,
+  worm
 };
 
 export default Constants;
