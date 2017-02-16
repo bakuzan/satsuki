@@ -1,0 +1,39 @@
+@import "../../styles/partials/_colours";
+
+#single-page-nav {
+  position: fixed;
+  display: inline-flex;
+  align-self: flex-start;
+  width: 200px;
+  #nav-list {
+    width: 100%;
+  }
+  ul {
+    padding-left: 1em;
+    list-style-type: none;
+  }
+  li > a {
+    color: lighten($primary-colour, $darken-amount*5);
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.230, 1.000, 0.320, 1.000);
+    &:hover {
+      color: $secondary-colour;
+    }
+  }
+  li.visible > a {
+    color: $primary-colour;
+    transform: translate(5px);
+  }
+}
+.worm-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  path {
+    transition: all 0.3s ease;
+  }
+}
