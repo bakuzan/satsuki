@@ -15,8 +15,8 @@ class MoveList extends Component {
     if (item.specialRule && item.specialRule.name === Constants.rules.promotion) {
       pgn += `${Constants.pgn.promotion}${Constants.pgn.piece[item.promoteTo] || ''}`;
     }
-    if (item.check.inCheck && !item.check.isMate) pgn += Constants.pgn.check;
-    if (item.check.inCheck && item.check.isMate) pgn += Constants.pgn.checkmate;
+    if (item.check.inCheck && !item.check.winner) pgn += Constants.pgn.check;
+    if (item.check.inCheck && item.check.winner) pgn += Constants.pgn.checkmate;
     return pgn;
   }
   renderMoveList(moves) {

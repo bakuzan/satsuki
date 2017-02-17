@@ -69,10 +69,10 @@ class MovementService {
         return false;
     }
   }
-  canTake({ name, colour }, from, to, files, squares) {
+  canTake({ name, colour }, from, to, files, squares, isCheckTest = false) {
     const toSquare = squares.find(x => x.file === to.file && x.rank === to.rank);
-    if (!toSquare) return false;
-    if (toSquare.contains && toSquare.contains.colour === colour) return false;
+    if (!toSquare || !toSquare.contains) return false;
+    if (!isCheckTest && toSquare.contains.colour === colour) return false;
 
     switch(name) {
       case Constants.pieces.pawn:

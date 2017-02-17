@@ -11,6 +11,7 @@ class CheckService {
     return { attacks, inCheck, isMate };
   }
   discoverSquaresUnderThreat(files, squares) {
+    const isCheckTest = true;
     const attacks = [];
     for(let i = 0, length = squares.length; i < length; i++) {
       const square = squares[i];
@@ -20,12 +21,12 @@ class CheckService {
       for(let j = 0, count = squares.length; j < count; j++) {
         const toSquare = squares[j];
         const to = { rank: toSquare.rank, file: toSquare.file };
-        if (movementService.canTake(piece, square, to, files, squares)) {
+        if (movementService.canTake(piece, square, to, files, squares, isCheckTest)) {
           attacks.push({
             attacker: piece,
             from: square,
             to: toSquare,
-            target: toSquare.contains ? toSquare.contains : null
+            target: toSquare.contains || null
           });
         }
       }
@@ -35,10 +36,9 @@ class CheckService {
   isKingInCheck(attacks) {
     for(let i = 0, length = attacks.length; i < length; i++) {
       const attack = attacks[i];
-
       if (!attack.target) continue;
       if (attack.target.name !== Constants.pieces.king) continue;
-
+      if (attack.attacker.colour === attack.target.colour) continue;
       return attack;
     }
     return null;
@@ -98,7 +98,10 @@ class CheckService {
   potentialMovesForKing(inCheck, attacks, files, squares) {
     const kingMovements = [];
     const kingPotentialMoves = attacks.filter(x => {
-      return x.attacker.name === inCheck.target.name && x.attacker.colour === inCheck.target.colour;
+      const isTheKing = x.attacker.name === inCheck.target.name && x.attacker.colour === inCheck.target.colour;
+      if (!isTheKing) return isTheKing;
+      const notFriendly = x.target.colour !== inCheck.target.colour;
+      return isTheKing && notFriendly;
     });
     const goodKingMoves = kingPotentialMoves.filter(x => {
       const badSpot = attacks.filter(y => y.to.rank === x.to.rank && y.to.file === x.to.file && y.attacker.colour !== x.attacker.colour);
@@ -108,7 +111,7 @@ class CheckService {
       const potentialMove = goodKingMoves[i];
       const escapeMove = { rank: potentialMove.to.rank, file: potentialMove.to.file };
       if (movementService.canMove(inCheck.target, inCheck.to, escapeMove, files, squares)) {
-        kingMovements.push(potentialMove.square);
+        kingMovements.push(potentialMove.to);
       }
     }
     return kingMovements.length > 0;
