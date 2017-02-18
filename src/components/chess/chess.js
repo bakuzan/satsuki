@@ -37,7 +37,12 @@ class Chess extends Component {
     this.setState({ moveIndex: newIndex });
   }
   handleSpecialRule(option) {
-    const { history, moves } = specialRuleService.applyRule(this.state, option);
+    let { history, moves } = specialRuleService.applyRule(this.state, option);
+    const current = history[history.length - 1];
+    if (this.state.autoReverseBoard && !boardService.hasCorrectBoardOrientation(current)) {
+      console.log('reverse post rule');
+      history = boardService.reverseBoard(history);
+    }
     this.setState({ history: history, specialRule: null, moves: moves });
   }
   handleSelectPiece(current, square, currentColour) {
@@ -90,7 +95,7 @@ class Chess extends Component {
           winner: inCheck && isMate,
         });
 
-        if (this.state.autoReverseBoard && boardService.hasCorrectBoardOrientation(current)) {
+        if (this.state.autoReverseBoard && !specialRule && boardService.hasCorrectBoardOrientation(current)) {
           history = boardService.reverseBoard(history);
         }
         console.log('%c NEW HISTORY: ', 'color: red;', history);

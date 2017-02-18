@@ -5,15 +5,17 @@ import './single-page-content-wrapper.css';
 class SinglePageContentWrapper extends Component {
   render() {
     return (
-      <section id="single-page-content">
-        {
-          !!this.props.title &&
-          <header>
-            <h1>{ this.props.title }</h1>
-          </header>
-        }
+      <section>
         <SinglePageNav items={this.props.navItems} />
-        { this.props.children }
+        <div id="single-page-content">
+          {
+            !!this.props.title &&
+            <header>
+              <h1>{ this.props.title }</h1>
+            </header>
+          }
+          { this.props.children }
+        </div>
       </section>
     );
   }

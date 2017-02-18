@@ -43,6 +43,7 @@ class BoardService {
     });
   }
   hasCorrectBoardOrientation({ ranks, isWhiteTurn }) {
+    console.log(ranks, isWhiteTurn);
     if (isWhiteTurn && ranks[0] === 8) return true;
     if (!isWhiteTurn && ranks[0] === 1) return true;
     return false;

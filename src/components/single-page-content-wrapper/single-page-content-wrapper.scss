@@ -1,5 +1,11 @@
 #single-page-content {
   display: inline-flex;
   flex-direction: column;
+  width: calc(100vw - 200px);
   margin-left: 200px;
+  h1 {
+    margin-bottom: 0;
+    font-size: 1.8em;
+    text-transform: capitalize;
+  }
 }

@@ -4,7 +4,6 @@ import './move-list.css';
 
 class MoveList extends Component {
   generatePortableGameNotation(item) {
-    console.log('move: ', item);
     let pgn = '';
     if (item.specialRule && item.specialRule.name === Constants.rules.castle) {
       return item.isKingSide ? Constants.pgn.castle.king : Constants.pgn.castle.queen;

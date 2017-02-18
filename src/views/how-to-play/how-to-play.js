@@ -58,7 +58,7 @@ class HowToPlay extends Component {
             </section>
             <section id="rook">
               <header>
-                <h4>rook</h4>
+                <h4>Rook</h4>
               </header>
               <div>
               </div>
