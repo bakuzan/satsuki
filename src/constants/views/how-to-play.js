@@ -35,6 +35,11 @@ const HowToPlayValues = {
         id: 'check',
         title: 'Check',
         children: []
+      },
+      {
+        id: 'winning',
+        title: 'Winning',
+        children: []
       }
     ]
 };
