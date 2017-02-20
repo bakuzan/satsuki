@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import SatsukiSvg from '../satsuki-svg/satsuki-svg.js';
+import SvgLogo from '../svg-logo/svg-logo.js';
 import { Link } from 'react-router';
 import Paths from '../../constants/paths';
 import './header.css';
@@ -11,7 +11,7 @@ class Header extends Component {
     return (
       <nav className="satsuki-header center-contents">
         <Link className="ripple" id="satsuki-svg" to={Paths.base}>
-          <SatsukiSvg />
+          <SvgLogo text="Satsuki" />
         </Link>
         <h1>SATSUKI</h1>
         <div id="navigation-links">
