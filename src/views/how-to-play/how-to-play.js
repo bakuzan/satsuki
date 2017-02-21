@@ -7,8 +7,8 @@ class HowToPlay extends Component {
     return (
       <SinglePageContentWrapper title="How to play"
                                 navItems={HowToPlayValues.menu}>
-        <section id="introduction">
-          <header className="single-page-section-header">
+        <section>
+          <header id="introduction" className="single-page-section-header">
             <h2>Introduction</h2>
           </header>
           <div>
@@ -22,8 +22,8 @@ class HowToPlay extends Component {
             </p>
           </div>
         </section>
-        <section id="setup">
-          <header className="single-page-section-header">
+        <section>
+          <header id="setup" className="single-page-section-header">
             <h2>Setup</h2>
           </header>
           <div>
@@ -40,13 +40,13 @@ class HowToPlay extends Component {
             </p>
           </div>
         </section>
-        <section id="movement">
-          <header className="single-page-section-header">
+        <section>
+          <header id="movement" className="single-page-section-header">
             <h2>Movement</h2>
           </header>
           <div>
-            <section id="king">
-              <header className="single-page-section-header">
+            <section>
+              <header id="king" className="single-page-section-header">
                 <h4>King</h4>
               </header>
               <div>
@@ -56,8 +56,8 @@ class HowToPlay extends Component {
                 </p>
               </div>
             </section>
-            <section id="queen">
-              <header className="single-page-section-header">
+            <section>
+              <header id="queen" className="single-page-section-header">
                 <h4>Queen</h4>
               </header>
               <div>
@@ -66,8 +66,8 @@ class HowToPlay extends Component {
                 </p>
               </div>
             </section>
-            <section id="bishop">
-              <header className="single-page-section-header">
+            <section>
+              <header id="bishop" className="single-page-section-header">
                 <h4>Bishop</h4>
               </header>
               <div>
@@ -77,8 +77,8 @@ class HowToPlay extends Component {
                 </p>
               </div>
             </section>
-            <section id="knight">
-              <header className="single-page-section-header">
+            <section>
+              <header id="knight" className="single-page-section-header">
                 <h4>Knight</h4>
               </header>
               <div>
@@ -91,16 +91,16 @@ class HowToPlay extends Component {
                 </p>
               </div>
             </section>
-            <section id="rook">
-              <header className="single-page-section-header">
+            <section>
+              <header id="rook" className="single-page-section-header">
                 <h4>Rook</h4>
               </header>
               <div>
                 Rooks can move any number of squares in straight lines. Up or down on files, Left or right on ranks, but never both.
               </div>
             </section>
-            <section id="pawn">
-              <header className="single-page-section-header">
+            <section>
+              <header id="pawn" className="single-page-section-header">
                 <h4>Pawn</h4>
               </header>
               <div>
@@ -116,13 +116,13 @@ class HowToPlay extends Component {
             </section>
           </div>
         </section>
-        <section id="special-rules">
-          <header className="single-page-section-header">
+        <section>
+          <header id="special-rules" className="single-page-section-header">
             <h2>Special rules</h2>
           </header>
           <div>
-            <section id="castling">
-              <header className="single-page-section-header">
+            <section>
+              <header id="castling" className="single-page-section-header">
                 <h4>Castling</h4>
               </header>
               <div>
@@ -140,8 +140,8 @@ class HowToPlay extends Component {
                 </ul>
               </div>
             </section>
-            <section id="en-passant">
-              <header className="single-page-section-header">
+            <section>
+              <header id="en-passant" className="single-page-section-header">
                 <h4>En passant</h4>
               </header>
               <div>
@@ -153,8 +153,8 @@ class HowToPlay extends Component {
                 </p>
               </div>
             </section>
-            <section id="promotion">
-              <header className="single-page-section-header">
+            <section>
+              <header id="promotion" className="single-page-section-header">
                 <h4>Promotion</h4>
               </header>
               <div>
@@ -170,8 +170,8 @@ class HowToPlay extends Component {
             </section>
           </div>
         </section>
-        <section id="check">
-          <header className="single-page-section-header">
+        <section>
+          <header id="check" className="single-page-section-header">
             <h2>Check</h2>
           </header>
           <div>
@@ -189,8 +189,8 @@ class HowToPlay extends Component {
             </p>
           </div>
         </section>
-        <section id="winning">
-          <header className="single-page-section-header">
+        <section>
+          <header id="winning" className="single-page-section-header">
             <h2>Winning</h2>
           </header>
           <div>
