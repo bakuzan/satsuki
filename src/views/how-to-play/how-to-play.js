@@ -8,7 +8,7 @@ class HowToPlay extends Component {
       <SinglePageContentWrapper title="How to play"
                                 navItems={HowToPlayValues.menu}>
         <section id="introduction">
-          <header>
+          <header className="single-page-section-header">
             <h2>Introduction</h2>
           </header>
           <div>
@@ -23,7 +23,7 @@ class HowToPlay extends Component {
           </div>
         </section>
         <section id="setup">
-          <header>
+          <header className="single-page-section-header">
             <h2>Setup</h2>
           </header>
           <div>
@@ -41,12 +41,12 @@ class HowToPlay extends Component {
           </div>
         </section>
         <section id="movement">
-          <header>
+          <header className="single-page-section-header">
             <h2>Movement</h2>
           </header>
           <div>
             <section id="king">
-              <header>
+              <header className="single-page-section-header">
                 <h4>King</h4>
               </header>
               <div>
@@ -57,7 +57,7 @@ class HowToPlay extends Component {
               </div>
             </section>
             <section id="queen">
-              <header>
+              <header className="single-page-section-header">
                 <h4>Queen</h4>
               </header>
               <div>
@@ -67,7 +67,7 @@ class HowToPlay extends Component {
               </div>
             </section>
             <section id="bishop">
-              <header>
+              <header className="single-page-section-header">
                 <h4>Bishop</h4>
               </header>
               <div>
@@ -78,7 +78,7 @@ class HowToPlay extends Component {
               </div>
             </section>
             <section id="knight">
-              <header>
+              <header className="single-page-section-header">
                 <h4>Knight</h4>
               </header>
               <div>
@@ -92,7 +92,7 @@ class HowToPlay extends Component {
               </div>
             </section>
             <section id="rook">
-              <header>
+              <header className="single-page-section-header">
                 <h4>Rook</h4>
               </header>
               <div>
@@ -100,7 +100,7 @@ class HowToPlay extends Component {
               </div>
             </section>
             <section id="pawn">
-              <header>
+              <header className="single-page-section-header">
                 <h4>Pawn</h4>
               </header>
               <div>
@@ -117,12 +117,12 @@ class HowToPlay extends Component {
           </div>
         </section>
         <section id="special-rules">
-          <header>
+          <header className="single-page-section-header">
             <h2>Special rules</h2>
           </header>
           <div>
             <section id="castling">
-              <header>
+              <header className="single-page-section-header">
                 <h4>Castling</h4>
               </header>
               <div>
@@ -141,7 +141,7 @@ class HowToPlay extends Component {
               </div>
             </section>
             <section id="en-passant">
-              <header>
+              <header className="single-page-section-header">
                 <h4>En passant</h4>
               </header>
               <div>
@@ -154,7 +154,7 @@ class HowToPlay extends Component {
               </div>
             </section>
             <section id="promotion">
-              <header>
+              <header className="single-page-section-header">
                 <h4>Promotion</h4>
               </header>
               <div>
@@ -171,7 +171,7 @@ class HowToPlay extends Component {
           </div>
         </section>
         <section id="check">
-          <header>
+          <header className="single-page-section-header">
             <h2>Check</h2>
           </header>
           <div>
@@ -190,7 +190,7 @@ class HowToPlay extends Component {
           </div>
         </section>
         <section id="winning">
-          <header>
+          <header className="single-page-section-header">
             <h2>Winning</h2>
           </header>
           <div>
