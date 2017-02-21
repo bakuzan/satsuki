@@ -1,8 +1,9 @@
 @import "../../styles/partials/_colours";
+@import "../../styles/partials/_variables";
 
 .satsuki-header {
   position: fixed;
-  height: 50px;
+  height: $fixed-header-height;
   width: 100%;
   background-color: $primary-background;
   color: $primary-colour-contrast;
