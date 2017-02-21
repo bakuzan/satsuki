@@ -1,3 +1,5 @@
+@import "../../styles/partials/_variables";
+
 #single-page-content {
   display: inline-flex;
   flex-direction: column;
@@ -8,4 +10,11 @@
     font-size: 1.8em;
     text-transform: capitalize;
   }
+}
+
+.single-page-section-header:before {
+    display: block;
+    content: "";
+    height: $fixed-header-height;
+    margin: -#{$fixed-header-height}px 0 0;
 }
